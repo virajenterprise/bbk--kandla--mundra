@@ -132,9 +132,13 @@ function selectjobsearched(x){
                 var cell8=rows.insertCell(7);
                 var cell9=rows.insertCell(8);
                 var cell10=rows.insertCell(9);
+                var cell11=rows.insertCell(10);
                 var button=document.createElement('button');
+                var button2=document.createElement('button');
                 button.setAttribute("class","w3-button w3-input w3-teal");
+                button2.setAttribute("class","w3-button w3-input w3-red");
                 button.innerHTML="Edit";
+                button2.innerHTML="Delete";
                 cell1.setAttribute("class","w3-hide");
                 cell2.setAttribute("class","w3-border w3-center");
                 cell3.setAttribute("class","w3-border w3-center");
@@ -145,6 +149,7 @@ function selectjobsearched(x){
                 cell8.setAttribute("class","w3-border w3-center");
                 cell9.setAttribute("class","w3-border w3-center");
                 cell10.setAttribute("class","w3-border");
+                cell11.setAttribute("class","w3-border");
                 cell1.innerHTML=myobj2.markspacking_ID;
                 cell2.innerHTML=myobj2.makrs;
                 cell3.innerHTML=myobj2.packing;
@@ -155,6 +160,7 @@ function selectjobsearched(x){
                 cell8.innerHTML=((myobj2.bags*myobj2.eachbagGweigh)/1000).toFixed(3);
                 cell9.innerHTML=myobj2.location;
                 cell10.appendChild(button);
+                cell11.appendChild(button2);
             });
             table.appendChild(tbody);
             hidemodal(document.getElementById("modal1shippername"));
@@ -193,7 +199,9 @@ function addmarkspacking(x){
                 var cell8=rows.insertCell(7);
                 var cell9=rows.insertCell(8);
                 var cell10=rows.insertCell(9);
+                var cell11=rows.insertCell(10);
                 var button=document.createElement('button');
+                var button2=document.createElement('button');
                 cell1.setAttribute("class","w3-border w3-hide");
                 cell2.setAttribute("class","w3-border w3-center");
                 cell3.setAttribute("class","w3-border w3-center");
@@ -204,8 +212,11 @@ function addmarkspacking(x){
                 cell8.setAttribute("class","w3-border w3-center");
                 cell9.setAttribute("class","w3-border w3-center");
                 cell10.setAttribute("class","w3-border");
+                cell11.setAttribute("class","w3-border");                
                 button.innerHTML="Edit"
+                button2.innerHTML="Delete"
                 button.setAttribute("class","w3-button w3-teal w3-input");
+                button2.setAttribute("class","w3-button w3-red w3-input");
                 cell1.innerHTML=myobj.markspacking_ID;
                 cell2.innerHTML=myobj.makrs;
                 cell3.innerHTML=myobj.packing;
@@ -216,6 +227,7 @@ function addmarkspacking(x){
                 cell8.innerHTML=((myobj.bags*myobj.eachbagGweigh)/1000).toFixed(3);
                 cell9.innerHTML=myobj.location;
                 cell10.appendChild(button);
+                cell11.appendChild(button2);
             });
             table.appendChild(tbody);
         }
