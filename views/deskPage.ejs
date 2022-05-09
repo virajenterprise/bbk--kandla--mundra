@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="w3css4.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskPage</title>
+</head>
+<body class="w3-sand w3-row">
+    <div class="w3-bar-block w3-sand w3-col l2" style="float: left; position: absolute;" id="sidebar">
+        <h3 class="w3-card w3-dark-grey w3-center">Menu</h3>
+        <a class="w3-bar-item w3-button w3-card w3-border-bottom w3-dark-grey" onclick="loadCreatJob()">Create Job</a>
+        <a class="w3-bar-item w3-button w3-card w3-border-bottom w3-dark-grey" onclick="loadCreateGatePass()">Create Gate Pass</a>
+        <a class="w3-bar-item w3-button w3-card w3-border-bottom w3-dark-grey" href="">Movement Sheet</a>
+    </div>    
+</body>
+<script src="jsFile.js"></script>
+<script>
+    function loadCreatJob(){
+        window.open('/createJob',"_blank:createJob",'width=1125,height=560,right=0, left=500, top=90');
+    }
+</script>
+</html>

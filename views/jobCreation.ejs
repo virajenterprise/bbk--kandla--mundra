@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="w3css4.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Job</title>
+</head>
+<body class="w3-sand">
+    <div class="w3-row ">
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" for="jobno">Job No</label>
+            <input class="w3-input w3-card" type="text" id="jobno" name="jobno">
+            <input class="w3-input w3-card" type="hidden" id="jobnoid" name="jobnoid">
+        </div>
+        <div class="w3-col l10" style="padding: 1%;">
+            <label style="font-weight: bold;" for="shippername">Shipper Name</label>
+            <input class="w3-card w3-input" type="text" id="shippername" name="shippername">
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Invoice No</label>
+            <input class="w3-input w3-card" type="text" name="invoiceno" id="invoiceno">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Shipping Bill No</label>
+            <input class="w3-input w3-card" type="text" name="shippingbillno" id="shippingbillno">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Shipping Date</label>
+            <input class="w3-input w3-card" type="date" name="shippingbilldate" id="shippingbilldate">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Discharge Port</label>
+            <input class="w3-input w3-card" type="text" name="dischargeport" id="dischargeport">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Loading Port</label>
+            <input class="w3-input w3-card" type="text" name="loadingport" id="loadingport">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >EV Number</label>
+            <input class="w3-input w3-card" type="text" name="evnumber" id="evnumber">
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Vessel Name</label>
+            <input class="w3-input w3-card" type="text" name="vesselname" id="vesselname">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Berth No</label>
+            <input class="w3-input w3-card" type="text" name="berthno" id="berthno">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Wharfage Entry No</label>
+            <input class="w3-input w3-card" type="text" name="WharfageEntryNo" id="WharfageEntryNo">
+        </div>
+        <div class="w3-col l2" style="padding: 1%;">
+            <label style="font-weight: bold;" >Wharfage Entry Dt</label>
+            <input class="w3-input w3-card" type="date" name="WharfageEntryDate" id="WharfageEntryDate">
+        </div>
+        <div class="w3-col l1" style="padding: 1%;">
+            <br>
+            <input class="w3-button w3-input w3-blue w3-card" onclick="createjob()" type="button" name="createjobbutton" id="createjobbutton" value="Save">
+        </div>
+        <div class="w3-col l1" style="padding: 1%;">
+            <br>
+            <input class="w3-button w3-input w3-cyan w3-card" type="button" name="editupdate" id="editupdate" value="Update" disabled>
+        </div>
+        <div class="w3-col l1" style="padding: 1%;">
+            <br>
+            <input class="w3-button  w3-input w3-teal w3-card" onclick="displaymodal(modal1shippername)" type="button" name="searchjobbutton" id="searchjobbutton" value="Search">
+        </div>
+        <div class="w3-col l1" style="padding: 1%;">
+            <br>
+            <button class="w3-button w3-input w3-pink" onclick="location.reload()">New</button>
+        </div>
+    </div>
+    <div>
+        <table class="w3-table w3-small" id="markstable">
+            <thead class="w3-brown">
+                <th class="w3-border">Marks</th>
+                <th class="w3-border">Packing</th>
+                <th class="w3-border">Bags</th>
+                <th class="w3-border">Each bag NMT</th>
+                <th class="w3-border">Each bag GMT</th>
+                <th class="w3-border">NMT</th>
+                <th class="w3-border">GMT</th>
+                <th class="w3-border">Location</th>
+                <th class="w3-border" colspan="2">Action</th>
+            </thead>
+            <thead class="w3-khaki">
+                <td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-input" type="text" disabled></td><td class="w3-border"><input class="w3-input" type="text" disabled></td><td class="w3-border"><input class="w3-input" type="text"></td><td class="w3-border"><input class="w3-button w3-blue"onclick="addmarkspacking(this)" type="button" name="addButton" id="addButton" value="Add" disabled></td></thead>
+        </table>
+    </div>
+    <div class="w3-modal" id="modal1shippername">        
+        <div class="w3-modal-content">
+            <table class="w3-table" id="jobsearchtable">
+                <thead class="w3-brown">
+                    <th class="w3-border">Job No</th>
+                    <th class="w3-border">Shipper</th>
+                    <th class="w3-border">Shipping Bill No</th>
+                    <th class="w3-border" colspan="2">Action</th>
+                </thead>
+                <thead class="w3-khaki">
+                    <td><input class="w3-input w3-border" type="text" name="jobnosearch" id="jobnosearch"></td>
+                    <td><input class="w3-input w3-border" type="text" name="shippersearch" id="shippersearch"></td>
+                    <td><input class="w3-input w3-border" type="text" name="sbsearch" id="sbsearch"></td>
+                    <td><button class="w3-button w3-teal" onclick="searchjob()">Search</button></td>
+                    <td><button class="w3-button w3-red" onclick="hidemodal(modal1shippername)">Close</button></td>
+                </thead>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="jsFile.js"></scri
