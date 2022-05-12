@@ -62,5 +62,15 @@ module.exports = {
             }
         });
         
+    },
+    updateshipperlist:(req,res)=>{
+        let query="SELECT * FROM shippermaster";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send(results);
+            }
+        });
     }
 }

@@ -1,19 +1,19 @@
-function displaymodal(x){
-    event.preventDefault();
-    var inputs=x.getElementsByTagName('input');    
-    var i=0;
-    while(i<inputs.length){
-        document.getElementById(inputs[i++].id).value="";
+window.onload=function(){
+    updateshipperlist();
+}
+function checkshippername(){
+    var shipper=selectedid(document.getElementById("shippername"));
+    if(typeof shipper==='undefined'){
+        var text="Shipper not found in records";
+        if(confirm(text) == true){
+            displaymodal(document.getElementById("addshipper"));
+        }else{
+        }        
     }
-    x.style.display="block";
 }
-function hidemodal(x){
-    x.style.display="none";
-}
-
 function createjob(){
-    var jobno=document.getElementById('jobno');
-    var shippername=document.getElementById('shippername');
+    var shipperid=selectedid(document.getElementById('shippername'));
+    var jobno=document.getElementById('jobno');    
     var invoiceno=document.getElementById('invoiceno');
     var shippingbillno=document.getElementById('shippingbillno');
     var shippingbilldate=document.getElementById('shippingbilldate');
@@ -250,4 +250,22 @@ function editjob(){
     document.getElementById("berthno").removeAttribute("disabled");
     document.getElementById("WharfageEntryNo").removeAttribute("disabled");
     document.getElementById("WharfageEntryDate").removeAttribute("disabled");
+}
+function updateshipperlist(){
+    var list=document.getElementById("shippername");
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            myobj.forEach((myobj,index)=>{
+                var option=document.createElement("option");
+                option.id=myobj.shippermaster_id;
+                option.innerHTML=myobj.shipper_name;
+                list.appendChild(option);
+            });
+        }
+    }
+    xhttp.open("GET","/shipperlistupdate",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
 }

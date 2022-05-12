@@ -43,6 +43,7 @@ app.post('/createJob',ajax.Creatjobpost);
 app.get('/searchjob',ajax.searchjob);
 app.get('/selectjobsearched',ajax.selectjobsearched);
 app.post('/addmarkspacking',ajax.addmarkspacking);
+app.get('/shipperlistupdate',ajax.updateshipperlist);
 
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});

@@ -16,7 +16,7 @@
         </div>
         <div class="w3-col l10" style="padding: 1%;">
             <label style="font-weight: bold;" for="shippername">Shipper Name</label>
-            <input class="w3-card w3-input" type="text" id="shippername" name="shippername" list="shippername">            
+            <input class="w3-card w3-input"  onfocusout="checkshippername()" type="text" id="shippername" name="shippername" list="shippername">            
         </div>
     </div>
     <div class="w3-row">
@@ -115,8 +115,15 @@
             </table>
         </div>
     </div>
-    <datalist id="shippername">        
+    <div class="w3-modal" id="addshipper">
+        <div class="w3-modal-content w3-border-aqua w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-card">            
+            <input class="w3-input " type="text" name="shippernameadd" id="shippernameadd" placeholder="Add Shipper Name Here">
+            <button class="w3-button w3-blue w3-right w3-card">Save</button>
+        </div>
+    </div>
+    <datalist id="shippername">
     </datalist>
 </body>
 <script src="jsFile.js"></script>
+<script src="module.js"></script>
 </html>
