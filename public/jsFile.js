@@ -8,11 +8,16 @@ function checkshippername(){
         if(confirm(text) == true){
             displaymodal(document.getElementById("addshipper"));
         }else{
+            alert("Please add Shipper Name From List");
         }        
     }
 }
 function createjob(){
     var shipperid=selectedid(document.getElementById('shippername'));
+    if(typeof shipperid==='undefined'){
+        alert("Please Add Shipper Name From List");
+        return;
+    }
     var jobno=document.getElementById('jobno');    
     var invoiceno=document.getElementById('invoiceno');
     var shippingbillno=document.getElementById('shippingbillno');
@@ -24,7 +29,7 @@ function createjob(){
     var berthno=document.getElementById('berthno');
     var WharfageEntryNo=document.getElementById('WharfageEntryNo');
     var WharfageEntryDate=document.getElementById('WharfageEntryDate');
-    var fdata="jobno="+jobno.value+"&shippername="+shippername.value+"&invoiceno="+invoiceno.value+"&shippingbillno="+shippingbillno.value+"&shippingbilldate="+shippingbilldate.value+"&dischargeport="+dischargeport.value+"&loadingport="+loadingport.value+"&evnumber="+evnumber.value+"&vesselname="+vesselname.value+"&berthno="+berthno.value+"&WharfageEntryNo="+WharfageEntryNo.value+"&WharfageEntryDate="+WharfageEntryDate.value;
+    var fdata="jobno="+jobno.value+"&shippername="+shipperid+"&invoiceno="+invoiceno.value+"&shippingbillno="+shippingbillno.value+"&shippingbilldate="+shippingbilldate.value+"&dischargeport="+dischargeport.value+"&loadingport="+loadingport.value+"&evnumber="+evnumber.value+"&vesselname="+vesselname.value+"&berthno="+berthno.value+"&WharfageEntryNo="+WharfageEntryNo.value+"&WharfageEntryDate="+WharfageEntryDate.value;
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&this.status==200){            
@@ -80,7 +85,7 @@ function searchjob(){
             button.setAttribute("onclick","selectjobsearched(this)");
             button.innerHTML="Select";
             cell1.innerHTML=myobj.jobno;
-            cell2.innerHTML=myobj.shipperName;
+            cell2.innerHTML=myobj.shipper_name;
             cell3.innerHTML=myobj.shippingbillno;
             cell4.appendChild(button);
         });
@@ -105,7 +110,7 @@ function selectjobsearched(x){
             myobj.forEach((myobj,index)=>{
                 document.getElementById("jobnoid").value=myobj.jobtable_id;
                 document.getElementById("jobno").value=myobj.jobno;
-                document.getElementById("shippername").value=myobj.shipperName;
+                document.getElementById("shippername").value=myobj.shipper_name;
                 document.getElementById("invoiceno").value=myobj.invoiceno;
                 document.getElementById("shippingbillno").value=myobj.shippingbillno;
                 document.getElementById("shippingbilldate").value=myobj.shippingbilldate;
@@ -172,8 +177,7 @@ function selectjobsearched(x){
     xhttp.send();    
 }
 function addmarkspacking(x){
-    var jobnoid=document.getElementById("jobnoid").value;
-    console.log(x.parentNode.parentNode.childNodes);
+    var jobnoid=document.getElementById("jobnoid").value;    
     var marks=x.parentNode.parentNode.childNodes[0].childNodes[0].value;
     var packing=x.parentNode.parentNode.childNodes[1].childNodes[0].value;
     var bags=x.parentNode.parentNode.childNodes[2].childNodes[0].value;
@@ -252,7 +256,7 @@ function editjob(){
     document.getElementById("WharfageEntryDate").removeAttribute("disabled");
 }
 function updateshipperlist(){
-    var list=document.getElementById("shippername");
+    var list=document.getElementById("shippernamelist");
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
@@ -260,7 +264,7 @@ function updateshipperlist(){
             myobj.forEach((myobj,index)=>{
                 var option=document.createElement("option");
                 option.id=myobj.shippermaster_id;
-                option.innerHTML=myobj.shipper_name;
+                option.innerHTML=myobj.shipper_name;                
                 list.appendChild(option);
             });
         }
@@ -268,4 +272,77 @@ function updateshipperlist(){
     xhttp.open("GET","/shipperlistupdate",true);
     xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
     xhttp.send();
+}
+function addshipper(){
+    var shippername=document.getElementById("shippernameadd");    
+    var xhttp= new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            alert("Shipper Added");
+            document.getElementById("shippername").value=shippername.value;
+            hidemodal(document.getElementById("addshipper"));
+            updateshipperlist();
+        }
+    }
+    xhttp.open("POST","/shippernameadd",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send("shippername="+shippername.value);
+}
+function updateshipper(){
+    var shipperid=selectedid(document.getElementById('shippername'));
+    console.log(shipperid);
+    if(typeof shipperid==='undefined'){
+        alert("Please Add Shipper Name From List");
+        return;
+    }
+    var jobnoid=document.getElementById("jobnoid");
+    var jobno=document.getElementById('jobno');    
+    var invoiceno=document.getElementById('invoiceno');
+    var shippingbillno=document.getElementById('shippingbillno');
+    var shippingbilldate=document.getElementById('shippingbilldate');
+    var dischargeport=document.getElementById('dischargeport');
+    var loadingport=document.getElementById('loadingport');
+    var evnumber=document.getElementById('evnumber');
+    var vesselname=document.getElementById('vesselname');
+    var berthno=document.getElementById('berthno');
+    var WharfageEntryNo=document.getElementById('WharfageEntryNo');
+    var WharfageEntryDate=document.getElementById('WharfageEntryDate');
+    var fdata="jobno="+jobno.value+"&shippername="+shipperid+"&invoiceno="+invoiceno.value+"&shippingbillno="+shippingbillno.value+"&shippingbilldate="+shippingbilldate.value+"&dischargeport="+dischargeport.value+"&loadingport="+loadingport.value+"&evnumber="+evnumber.value+"&vesselname="+vesselname.value+"&berthno="+berthno.value+"&WharfageEntryNo="+WharfageEntryNo.value+"&WharfageEntryDate="+WharfageEntryDate.value+"&jobnoid="+jobnoid.value;
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=this.responseText;
+            if(myobj=='updated.'){
+                alert("Updated.");
+                document.getElementById('shippername').setAttribute("disabled","disabled");
+                jobno.setAttribute("disabled","disabled");
+                invoiceno.setAttribute("disabled","disabled");
+                shippingbillno.setAttribute("disabled","disabled");
+                shippingbilldate.setAttribute("disabled","disabled");
+                dischargeport.setAttribute("disabled","disabled");
+                loadingport.setAttribute("disabled","disabled");
+                evnumber.setAttribute("disabled","disabled");
+                vesselname.setAttribute("disabled","disabled");
+                berthno.setAttribute("disabled","disabled");
+                WharfageEntryNo.setAttribute("disabled","disabled");
+                WharfageEntryDate.setAttribute("disabled","disabled");
+                document.getElementById("editupdate").setAttribute("disabled","disabled");
+            }else{
+                alert("error in Update");
+            }
+        }
+    }
+    xhttp.open("PUT","/updateshipper",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send(fdata);
+}
+function countbagsmt(){
+    var bags=document.getElementById("bagscount").value;
+    var eachbagnmt=document.getElementById("eachbagnmt").value;
+    var eachbaggmt=document.getElementById("eachbaggmt").value;
+    var ttlnmt=document.getElementById("ttlbagnmt");
+    var ttlgmt=document.getElementById("ttlbaggmt");
+    ttlnmt.value=parseFloat((bags*eachbagnmt/1000)).toFixed(3);
+    ttlgmt.value=parseFloat((bags*eachbaggmt/1000)).toFixed(3);
+
 }

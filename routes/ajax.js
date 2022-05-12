@@ -19,17 +19,17 @@ module.exports = {
         });
     },
     searchjob:(req,res)=>{
-        let query="SELECT jobtable.jobno,jobtable.shipperName,jobtable.shippingbillno FROM jobtable WHERE jobtable.jobno LIKE '%"+req.query.jobnosearch+"%' AND jobtable.shipperName LIKE '%"+req.query.shippersearch+"%' AND jobtable.shippingbillno LIKE '%"+req.query.sbsearch+"%'";
+        let query="SELECT jobtable.jobno,shippermaster.shipper_name,jobtable.shippingbillno FROM (jobtable INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id) WHERE jobtable.jobno LIKE '%"+req.query.jobnosearch+"%' AND jobtable.shipperName LIKE '%"+req.query.shippersearch+"%' AND jobtable.shippingbillno LIKE '%"+req.query.sbsearch+"%'";
         let sql=conn.query(query,(err,results)=>{
             if(err){
                 console.log(err);
-            }else{
-                res.send(results);
+            }else{                
+                res.send(results);                
             }
         });
     },
     selectjobsearched:(req,res)=>{
-        let query="SELECT jobtable.jobtable_id,jobtable.jobno,jobtable.shipperName,jobtable.invoiceno,jobtable.shippingbillno,DATE_FORMAT(jobtable.shippingbilldate,'%Y-%m-%d') AS shippingbilldate,jobtable.dischargePort,jobtable.LoadingPort,jobtable.EVNumber,jobtable.VesselName,jobtable.berthNo,jobtable.wharfageentryNo, DATE_FORMAT(jobtable.wharfageentryDate,'%Y-%m-%d') AS wharfageentryDate FROM jobtable WHERE jobtable.jobno='"+req.query.jobno+"'";
+        let query="SELECT jobtable.jobtable_id,jobtable.jobno,shippermaster.shipper_name,jobtable.invoiceno,jobtable.shippingbillno,DATE_FORMAT(jobtable.shippingbilldate,'%Y-%m-%d') AS shippingbilldate,jobtable.dischargePort,jobtable.LoadingPort,jobtable.EVNumber,jobtable.VesselName,jobtable.berthNo,jobtable.wharfageentryNo, DATE_FORMAT(jobtable.wharfageentryDate,'%Y-%m-%d') AS wharfageentryDate FROM (jobtable INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id) WHERE jobtable.jobno='"+req.query.jobno+"'";
         let sql=conn.query(query,(err,results)=>{
             if(err){
                 console.log(err);
@@ -70,6 +70,26 @@ module.exports = {
                 console.log(err);
             }else{
                 res.send(results);
+            }
+        });
+    },
+    shippernameadd:(req,res)=>{
+        let query="INSERT INTO shippermaster(shippermaster.shipper_name)VALUES ('"+req.body.shippername+"')";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send("added");
+            }
+        });
+    },
+    updateshipper:(req,res)=>{
+        let query="UPDATE jobtable SET jobtable.jobno='"+req.body.jobno+"',jobtable.shipperName='"+req.body.shippername+"',jobtable.invoiceno='"+req.body.invoiceno+"',jobtable.shippingbillno='"+req.body.shippingbillno+"',jobtable.shippingbilldate='"+req.body.shippingbilldate+"',jobtable.dischargePort='"+req.body.dischargeport+"',jobtable.LoadingPort='"+req.body.loadingport+"',jobtable.EVNumber='"+req.body.evnumber+"',jobtable.VesselName='"+req.body.vesselname+"',jobtable.berthNo='"+req.body.berthno+"',jobtable.wharfageentryNo='"+req.body.WharfageEntryNo+"',jobtable.wharfageentryDate='"+req.body.WharfageEntryDate+"' WHERE jobtable.jobtable_id='"+req.body.jobnoid+"' ";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send("updated.");
             }
         });
     }
