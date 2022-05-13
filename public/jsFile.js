@@ -142,6 +142,8 @@ function selectjobsearched(x){
                 var button2=document.createElement('button');
                 button.setAttribute("class","w3-button w3-input w3-teal");
                 button2.setAttribute("class","w3-button w3-input w3-red");
+                button.setAttribute("onclick","editmarksdetails(this)");
+                button2.setAttribute("onclick","deletemarksdetails(this)");
                 button.innerHTML="Edit";
                 button2.innerHTML="Delete";
                 cell1.setAttribute("class","w3-hide");
@@ -170,6 +172,14 @@ function selectjobsearched(x){
             table.appendChild(tbody);
             hidemodal(document.getElementById("modal1shippername"));
             document.getElementById("addButton").removeAttribute("disabled");
+            document.getElementById("marksid").value="";
+            document.getElementById("marks").value="";
+            document.getElementById("packing").value="";
+            document.getElementById("bagscount").value="";
+            document.getElementById("eachbagnmt").value="";
+            document.getElementById("eachbaggmt").value="";
+            document.getElementById("warehouselocation").value="";
+            countbagsmt();
         }
     }
     xhttp.open("GET","/selectjobsearched?jobno="+jobno,true);
@@ -192,6 +202,13 @@ function addmarkspacking(x){
             var myobj=JSON.parse(this.responseText)
             var tbody=document.createElement("tbody");
             myobj.forEach((myobj,index)=>{
+                jobnoid.value="";
+                marks.value="";
+                packing.value="";
+                bags.value="";
+                ebnw.value="";
+                ebgw.value="";
+                location.value="";
                 var rows=tbody.insertRow(-1);
                 var cell1=rows.insertCell(0);
                 var cell2=rows.insertCell(1);
@@ -221,6 +238,8 @@ function addmarkspacking(x){
                 button2.innerHTML="Delete"
                 button.setAttribute("class","w3-button w3-teal w3-input");
                 button2.setAttribute("class","w3-button w3-red w3-input");
+                button.setAttribute("onclick","editmarksdetails(this)");
+                button2.setAttribute("onclick","deletemarksdetails(this)");
                 cell1.innerHTML=myobj.markspacking_ID;
                 cell2.innerHTML=myobj.makrs;
                 cell3.innerHTML=myobj.packing;
@@ -345,4 +364,118 @@ function countbagsmt(){
     ttlnmt.value=parseFloat((bags*eachbagnmt/1000)).toFixed(3);
     ttlgmt.value=parseFloat((bags*eachbaggmt/1000)).toFixed(3);
 
+}
+function editmarksdetails(x){    
+    document.getElementById("marksid").value=x.parentNode.parentNode.childNodes[0].innerHTML;
+    document.getElementById("marks").value=x.parentNode.parentNode.childNodes[1].innerHTML;
+    document.getElementById("packing").value=x.parentNode.parentNode.childNodes[2].innerHTML;
+    document.getElementById("bagscount").value=x.parentNode.parentNode.childNodes[3].innerHTML;
+    document.getElementById("eachbagnmt").value=x.parentNode.parentNode.childNodes[4].innerHTML;
+    document.getElementById("eachbaggmt").value=x.parentNode.parentNode.childNodes[5].innerHTML;
+    document.getElementById("warehouselocation").value=x.parentNode.parentNode.childNodes[8].innerHTML;
+    document.getElementById("addButton").setAttribute("disabled","disabled");
+    document.getElementById("editButton").removeAttribute("disabled");
+    var row=x.parentNode.parentNode;
+    var tbody=x.parentNode.parentNode.parentNode;
+    tbody.removeChild(row);
+    var buttons=tbody.getElementsByTagName("button");
+    var i=0;
+    while(i<buttons.length){
+        buttons[i++].setAttribute("disabled","disabled");
+    }
+    countbagsmt();
+
+}
+function editmarkspacking(x){
+    var marksid=x.parentNode.parentNode.childNodes[0].childNodes[0];
+    var marks=x.parentNode.parentNode.childNodes[1].childNodes[0];
+    var packing=x.parentNode.parentNode.childNodes[2].childNodes[0];
+    var bags=x.parentNode.parentNode.childNodes[3].childNodes[0];
+    var ebnmt=x.parentNode.parentNode.childNodes[4].childNodes[0];
+    var ebgmt=x.parentNode.parentNode.childNodes[5].childNodes[0];
+    var loc=x.parentNode.parentNode.childNodes[8].childNodes[0];
+    var tbody=x.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("tbody")[0];    
+    var fdata="marksid="+marksid.value+"&marks="+marks.value+"&packing="+packing.value+"&bags="+bags.value+"&ebnmt="+ebnmt.value+"&ebgmt="+ebgmt.value+"&loc="+loc.value;    
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            marksid.value="";
+            marks.value="";
+            packing.value="";
+            bags.value="";
+            ebnmt.value="";
+            ebgmt.value="";
+            loc.value="";
+            countbagsmt();
+            myobj.forEach((myobj,index)=>{
+                var row=tbody.insertRow(-1);
+                var cell1=row.insertCell(0);
+                var cell2=row.insertCell(1);
+                var cell3=row.insertCell(2);
+                var cell4=row.insertCell(3);
+                var cell5=row.insertCell(4);
+                var cell6=row.insertCell(5);
+                var cell7=row.insertCell(6);
+                var cell8=row.insertCell(7);
+                var cell9=row.insertCell(8);
+                var cell10=row.insertCell(9);
+                var cell11=row.insertCell(10);
+                var button=document.createElement("button");
+                var button1=document.createElement("button");
+                button.setAttribute("class","w3-button w3-input w3-teal w3-input");
+                button1.setAttribute("class","w3-button w3-input w3-red w3-input");
+                button.setAttribute("onclick","editmarksdetails(this)");
+                button1.setAttribute("onclick","deletemarksdetails(this)");
+                button.innerHTML="Edit";
+                button1.innerHTML="Delete";
+                cell1.setAttribute("class","w3-hide");
+                cell2.setAttribute("class","w3-border w3-center");
+                cell3.setAttribute("class","w3-border w3-center");
+                cell4.setAttribute("class","w3-border w3-center");
+                cell5.setAttribute("class","w3-border w3-center");
+                cell6.setAttribute("class","w3-border w3-center");
+                cell7.setAttribute("class","w3-border w3-center");
+                cell8.setAttribute("class","w3-border w3-center");
+                cell9.setAttribute("class","w3-border w3-center");
+                cell10.setAttribute("class","w3-border w3-center");
+                cell11.setAttribute("class","w3-border w3-center");
+                cell1.innerHTML=myobj.markspacking_ID;
+                cell2.innerHTML=myobj.makrs;
+                cell3.innerHTML=myobj.packing;
+                cell4.innerHTML=myobj.bags;
+                cell5.innerHTML=myobj.eachbagNweigh.toFixed(3);
+                cell6.innerHTML=myobj.eachbagGweigh.toFixed(3);
+                cell7.innerHTML=(myobj.bags*myobj.eachbagNweigh/1000).toFixed(3);
+                cell8.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);
+                cell9.innerHTML=myobj.location;
+                cell10.appendChild(button);
+                cell11.appendChild(button1);
+            });
+            var buttons=tbody.getElementsByTagName("button");
+            var i=0;
+            while(i<buttons.length){
+                buttons[i++].removeAttribute("disabled");
+            }
+            document.getElementById("editButton").setAttribute("disabled","disabled");
+            document.getElementById("addButton").removeAttribute("disabled");
+        }
+    }
+    xhttp.open("PUT","/editmarkspacking",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send(fdata);
+}
+function deletemarksdetails(x){
+    var marksid=x.parentNode.parentNode.childNodes[0].innerHTML;
+    var row=x.parentNode.parentNode;
+    var tbody=x.parentNode.parentNode.parentNode;
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            tbody.removeChild(row);
+        }
+    }
+    xhttp.open("delete","/deletemarksdetails?marksid="+marksid,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();    
 }

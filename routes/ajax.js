@@ -92,5 +92,32 @@ module.exports = {
                 res.send("updated.");
             }
         });
+    },
+    editmarkspacking:(req,res)=>{
+        let query="UPDATE markspacking SET markspacking.makrs='"+req.body.marks+"',markspacking.packing='"+req.body.packing+"',markspacking.bags='"+req.body.bags+"',markspacking.eachbagNweigh='"+req.body.ebnmt+"',markspacking.eachbagGweigh='"+req.body.ebgmt+"',markspacking.location='"+req.body.loc+"' WHERE markspacking.markspacking_ID='"+req.body.marksid+"'";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                let query2="SELECT * FROM markspacking WHERE markspacking.markspacking_ID='"+req.body.marksid+"'";
+                conn.query(query2,(err,results2)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.send(results2);
+                    }
+                });
+            }
+        });
+    },
+    deletemarksdetails:(req,res)=>{
+        let query="DELETE FROM markspacking WHERE markspacking.markspacking_ID='"+req.query.marksid+"'";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send("Deleted");
+            }
+        });
     }
 }
