@@ -1,5 +1,5 @@
 window.onload=function(){
-    updateshipperlist();
+    updateshipperlist();    
 }
 function checkshippername(){
     var shipper=selectedid(document.getElementById("shippername"));
@@ -180,6 +180,7 @@ function selectjobsearched(x){
             document.getElementById("eachbaggmt").value="";
             document.getElementById("warehouselocation").value="";
             countbagsmt();
+            tabletotal();
         }
     }
     xhttp.open("GET","/selectjobsearched?jobno="+jobno,true);
@@ -253,6 +254,7 @@ function addmarkspacking(x){
                 cell11.appendChild(button2);
             });
             table.appendChild(tbody);
+            tabletotal();
         }
     }
     xhttp.open("POST","/addmarkspacking",true);
@@ -363,7 +365,27 @@ function countbagsmt(){
     var ttlgmt=document.getElementById("ttlbaggmt");
     ttlnmt.value=parseFloat((bags*eachbagnmt/1000)).toFixed(3);
     ttlgmt.value=parseFloat((bags*eachbaggmt/1000)).toFixed(3);
-
+}
+function tabletotal(){
+    var rows=document.getElementById("markstable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    var i=0;
+    var bags=0;
+    while(i<rows.length){
+        bags=bags+parseFloat(rows[i++].getElementsByTagName('td')[3].innerHTML);
+    }
+    document.getElementById("markstable").getElementsByTagName('tfoot')[0].getElementsByTagName('th')[1].innerHTML=bags;
+    var j=0;
+    var nmt=0;
+    while(j<rows.length){
+        nmt=nmt+parseFloat(rows[j++].getElementsByTagName('td')[6].innerHTML);
+    }
+    document.getElementById("markstable").getElementsByTagName('tfoot')[0].getElementsByTagName('th')[4].innerHTML=nmt.toFixed(3);
+    var h=0;
+    var gmt=0;
+    while(h<rows.length){
+        gmt=gmt+parseFloat(rows[h++].getElementsByTagName('td')[7].innerHTML);
+    }
+    document.getElementById("markstable").getElementsByTagName('tfoot')[0].getElementsByTagName('th')[5].innerHTML=gmt.toFixed(3);
 }
 function editmarksdetails(x){    
     document.getElementById("marksid").value=x.parentNode.parentNode.childNodes[0].innerHTML;
@@ -384,7 +406,7 @@ function editmarksdetails(x){
         buttons[i++].setAttribute("disabled","disabled");
     }
     countbagsmt();
-
+    tabletotal();
 }
 function editmarkspacking(x){
     var marksid=x.parentNode.parentNode.childNodes[0].childNodes[0];
@@ -459,6 +481,7 @@ function editmarkspacking(x){
             }
             document.getElementById("editButton").setAttribute("disabled","disabled");
             document.getElementById("addButton").removeAttribute("disabled");
+            tabletotal();
         }
     }
     xhttp.open("PUT","/editmarkspacking",true);
@@ -473,6 +496,7 @@ function deletemarksdetails(x){
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
             tbody.removeChild(row);
+            tabletotal();
         }
     }
     xhttp.open("delete","/deletemarksdetails?marksid="+marksid,true);

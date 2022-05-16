@@ -48,6 +48,8 @@ app.post('/shippernameadd',ajax.shippernameadd);
 app.put('/updateshipper',ajax.updateshipper);
 app.put('/editmarkspacking',ajax.editmarkspacking);
 app.delete('/deletemarksdetails',ajax.deletemarksdetails);
+app.get('/GP',ajax.gp);
+app.get('/getvessellist',ajax.getvessellist);
 
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});

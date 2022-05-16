@@ -93,7 +93,16 @@
                 <th class="w3-border" colspan="2">Action</th>
             </thead>
             <thead class="w3-khaki">
-                <td class="w3-hide"><input class="w3-input" type="hidden" id="marksid"></td><td class="w3-border"><input class="w3-input" type="text" id="marks"></td><td class="w3-border"><input class="w3-input" type="text" id="packing"></td><td class="w3-border"><input class="w3-input" id="bagscount"  onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="eachbagnmt" onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="eachbaggmt" onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="ttlbagnmt" type="text" disabled></td><td class="w3-border"><input class="w3-input" id="ttlbaggmt" type="text" disabled></td><td class="w3-border"><input class="w3-input" type="text" id="warehouselocation"></td><td class="w3-border" ><input class="w3-button w3-blue w3-input"onclick="addmarkspacking(this)" type="button" name="addButton" id="addButton" value="Add" disabled></td><td class="w3-border" ><input class="w3-button w3-blue w3-input"onclick="editmarkspacking(this)" type="button" name="editButton" id="editButton" value="Update" disabled></td></thead>            
+                <td class="w3-hide"><input class="w3-input" type="hidden" id="marksid"></td><td class="w3-border"><input class="w3-input" type="text" id="marks"></td><td class="w3-border"><input class="w3-input" type="text" id="packing"></td><td class="w3-border"><input class="w3-input" id="bagscount"  onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="eachbagnmt" onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="eachbaggmt" onchange="countbagsmt()" type="number"></td><td class="w3-border"><input class="w3-input" id="ttlbagnmt" type="text" disabled></td><td class="w3-border"><input class="w3-input" id="ttlbaggmt" type="text" disabled></td><td class="w3-border"><input class="w3-input" type="text" id="warehouselocation"></td><td class="w3-border" ><input class="w3-button w3-blue w3-input"onclick="addmarkspacking(this)" type="button" name="addButton" id="addButton" value="Add" disabled></td><td class="w3-border" ><input class="w3-button w3-blue w3-input"onclick="editmarkspacking(this)" type="button" name="editButton" id="editButton" value="Update" disabled></td></thead>
+                <tfoot class="w3-brown">
+                    <th colspan="2" class="w3-border"></th>
+                    <th class="w3-border w3-center"></th>
+                    <th class="w3-border w3-center"></th>
+                    <th class="w3-border w3-center"></th>
+                    <th class="w3-border w3-center"></th>
+                    <th class="w3-border w3-center"></th>
+                    <th colspan="3" class="w3-border w3-center"></th>
+                </tfoot>
             </table>
     </div>
     <div class="w3-modal" id="modal1shippername">        
@@ -111,7 +120,7 @@
                     <td><input class="w3-input w3-border" type="text" name="sbsearch" id="sbsearch"></td>
                     <td><button class="w3-button w3-teal" onclick="searchjob()">Search</button></td>
                     <td><button class="w3-button w3-red" onclick="hidemodal(modal1shippername)">Close</button></td>
-                </thead>
+                </thead>                
             </table>
         </div>
     </div>

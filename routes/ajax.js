@@ -119,5 +119,18 @@ module.exports = {
                 res.send("Deleted");
             }
         });
+    },
+    gp:(req,res)=>{
+        res.render('gatePass');
+    },
+    getvessellist:(req,res)=>{
+        let query="SELECT jobtable.VesselName FROM jobtable";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send(results);
+            }
+        });
     }
 }

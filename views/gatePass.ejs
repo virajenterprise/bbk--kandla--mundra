@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="w3css4.css">
+    <title>GatePass</title>
+</head>
+<body>
+    <div class="w3-row w3-sand w3-bottombar w3-leftbar w3-topbar w3-rightbar w3-border-aqua" style="height:100vh ;">
+        <div class="w3-half w3-rightbar  w3-border-aqua" style="height: 100vh;">
+            <div class="w3-cell-row ">
+                <div class="w3-cell" style="padding: 1%;">
+                    <label for="GatePassno" style="font-weight: bold;">Gate Pass Number</label>
+                    <input class="w3-input w3-card" type="text" name="" id="" disabled>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-cell" style="padding: 1%;">
+                    <label for="Date" style="font-weight: bold;">Gate Pass Date</label>
+                    <input class="w3-input w3-card" type="datetime" name="gpdate" id="gpdate" disabled>
+                </div>                
+            </div>
+            <div class="w3-cell-row">                
+                <div class="w3-cell" style="padding: 1%;">
+                    <label for="truckno" style="font-weight: bold;">Vessel Name</label>
+                    <input class="w3-select w3-card" type="text" name="" id="" list="vesselList">                    
+                </div>
+            </div>
+            <div class="w3-cell-row">                
+                <div class="w3-cell" style="padding: 1%;">
+                    <label for="truckno" style="font-weight: bold;">Truck No</label>
+                    <input class="w3-input w3-card" type="text" name="" id="">
+                </div>
+            </div>            
+            <br>            
+            <div class="w3-cell-row ">
+                <table class="w3-table w3-small">
+                    <thead class="w3-card">
+                        <th class="w3-border" style="white-space: nowrap;">Job No</th>
+                        <th class="w3-border">Packing</th>
+                        <th class="w3-border">Bags</th>
+                        <th class="w3-border">NMT</th>
+                        <th class="w3-border">GMT</th>
+                        <th class="w3-border" colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                     <tr>
+                        <td class="w3-border">
+                            <select class="w3-select w3-card w3-input" name="" id="">
+                                <option value="">6007</option>
+                                <option value="">6008</option>
+                            </select>
+                        </td>
+                        <td class="w3-border">
+                            <select class="w3-select w3-card w3-input" name="" id="">
+                                <option value="">04x10Kgs</option>
+                                <option value="">08x05Kgs</option>
+                            </select>
+                        </td>
+                        <td class="w3-border">
+                            <input class="w3-input w3-card" type="number" name="" id="">
+                        </td>
+                        <td class="w3-border">
+                            <input class="w3-input w3-card" type="number" name="" id="" disabled>
+                        </td>
+                        <td class="w3-border">
+                            <input class="w3-input w3-card" type="number" name="" id="" disabled>
+                        </td>
+                        <td class="w3-border">
+                            <button class="w3-button w3-input w3-blue w3-card">Add</button>
+                        </td>
+                        <td class="w3-border">
+                            <button class="w3-button w3-input w3-teal w3-card">Update</button>
+                        </td>
+                     </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="w3-rest w3-border-aqua" style="height: 100vh;">
+            <div class="w3-cell-row ">
+                <div class="w3-cell ">
+                    <label style="font-weight: bold;">Details</label>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <datalist id="vesselList"></datalist>
+</body>
+<script src="jsFile.js"></script>
+<script src="module.js"></script>
+<script>
+    window.onload=function(){
+    var date = new Date();
+    document.getElementById("gpdate").value=date;
+    var xhttp=new XMLHttpRequest();
+    var list=document.getElementById("vesselList");
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            myobj.forEach((myobj,index)=>{
+                var options=document.createElement("option");
+
+            });
+        }
+    }
+    xhttp.open("GET","/getvessellist",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+</script>
+</html>
