@@ -9,11 +9,11 @@
 </head>
 <body>
     <div class="w3-row w3-sand w3-bottombar w3-leftbar w3-topbar w3-rightbar w3-border-aqua" style="height:100vh ;">
-        <div class="w3-half w3-rightbar  w3-border-aqua" style="height: 100vh;">
+        <div class="w3-half w3-rightbar  w3-border-aqua w3-display-container" style="height: 100vh;">
             <div class="w3-cell-row ">
                 <div class="w3-cell" style="padding: 1%;">
                     <label for="GatePassno" style="font-weight: bold;">Gate Pass Number</label>
-                    <input class="w3-input w3-card" type="text" name="" id="" disabled>
+                    <input class="w3-input w3-card" type="text" name="gatePassID" id="gatePassID" disabled >
                 </div>
             </div>
             <div class="w3-cell-row">
@@ -25,66 +25,227 @@
             <div class="w3-cell-row">                
                 <div class="w3-cell" style="padding: 1%;">
                     <label for="truckno" style="font-weight: bold;">Vessel Name</label>
-                    <input class="w3-select w3-card" type="text" name="" id="" list="vesselList">                    
+                    <input class="w3-select w3-card" type="text" onchange="displayjobfromvesselname()" name="VesselNameSelected" id="VesselNameSelected" list="vesselList">
                 </div>
             </div>
             <div class="w3-cell-row">                
                 <div class="w3-cell" style="padding: 1%;">
                     <label for="truckno" style="font-weight: bold;">Truck No</label>
-                    <input class="w3-input w3-card" type="text" name="" id="">
+                    <input class="w3-input w3-card" type="text" name="truckno" id="truckno">
                 </div>
             </div>            
             <br>            
             <div class="w3-cell-row ">
-                <table class="w3-table w3-small">
-                    <thead class="w3-card">
+                <table class="w3-table w3-small" id="gatepassupdatetable">
+                    <thead class="w3-card w3-brown">
                         <th class="w3-border" style="white-space: nowrap;">Job No</th>
-                        <th class="w3-border">Packing</th>
-                        <th class="w3-border">Bags</th>
-                        <th class="w3-border">NMT</th>
-                        <th class="w3-border">GMT</th>
-                        <th class="w3-border" colspan="2">Action</th>
+                        <th class="w3-border" colspan="3" >Marks/Packing/Location</th>
+                        <th class="w3-border">Bags</th>                        
+                        <th class="w3-border w3-center" colspan="2">Action</th>
                     </thead>
-                    <tbody>
+                    <thead>
                      <tr>
                         <td class="w3-border">
-                            <select class="w3-select w3-card w3-input" name="" id="">
-                                <option value="">6007</option>
-                                <option value="">6008</option>
+                            <select class="w3-select w3-card w3-input" onchange="displaymarksfromjobno()" name="jobnoselected" id="jobnoselected">
                             </select>
                         </td>
-                        <td class="w3-border">
-                            <select class="w3-select w3-card w3-input" name="" id="">
-                                <option value="">04x10Kgs</option>
-                                <option value="">08x05Kgs</option>
-                            </select>
+                        <td class="w3-border" colspan="3">
+                            <select class="w3-select w3-card w3-input" name="markspackingselected" id="markspackingselected"></select>
                         </td>
                         <td class="w3-border">
-                            <input class="w3-input w3-card" type="number" name="" id="">
+                            <input class="w3-input w3-card" type="number" name="bagsgatepass" id="bagsgatepass">
+                        </td>                        
+                        <td class="w3-border">
+                            <button class="w3-button w3-input w3-blue w3-card" onclick="creategatepass()" >Add</button>
                         </td>
                         <td class="w3-border">
-                            <input class="w3-input w3-card" type="number" name="" id="" disabled>
-                        </td>
-                        <td class="w3-border">
-                            <input class="w3-input w3-card" type="number" name="" id="" disabled>
-                        </td>
-                        <td class="w3-border">
-                            <button class="w3-button w3-input w3-blue w3-card">Add</button>
-                        </td>
-                        <td class="w3-border">
-                            <button class="w3-button w3-input w3-teal w3-card">Update</button>
+                            <button class="w3-button w3-input w3-teal w3-card" disabled>Update</button>
                         </td>
                      </tr>
-                    </tbody>
+                    </thead>
+                    <tfoot class="w3-brown">
+                        <th colspan="2" class="w3-border"></th>
+                        <th class="w3-border"></th>
+                        <th class="w3-border"></th>
+                        <th class="w3-border"></th>
+                        <th class="w3-border" colspan="2"></th>
+                    </tfoot>
                 </table>
+            </div><br>
+            <div class="w3-cell-row w3-card w3-border w3-border-aqua w3-display-bottommiddle" style="margin-bottom: 2%; padding: 1%;">
+                <div class="w3-cell">
+                    <button class="w3-button w3-input w3-blue">Search</button>                    
+                </div>
+                <div class="w3-cell">
+                    <button class="w3-button w3-input w3-deep-orange">Delete Pass</button>
+                </div>
+                <div class="w3-cell">
+                    <button class="w3-button w3-input w3-green">Print Pass</button>
+                </div>
+                <div class="w3-cell">
+                    <button class="w3-button w3-input w3-green w3-indigo">Print EA</button>
+                </div>
             </div>
         </div>
         <div class="w3-rest w3-border-aqua" style="height: 100vh;">
             <div class="w3-cell-row ">
-                <div class="w3-cell ">
-                    <label style="font-weight: bold;">Details</label>
+                <div class="w3-cell w3-center">
+                    <label style="font-weight: bold;" >Details</label>
                 </div>
             </div>
+            <!--<table class="w3-table w3-small w3-bordered">
+                <thead  class=" w3-card w3-green">
+                    <th class="w3-border">Shipper Name :-</th>
+                    <th class="w3-border">Al Maha Foods Ltd</th>
+                    <th class="w3-border">Job no:-</th>
+                    <th class="w3-border">6008</th>
+                    <th class="w3-border">Inv no:-</th>
+                    <th class="w3-border">35</th>
+                </thead>
+                <thead>
+                    <th class="w3-teal w3-border">Marks:-Al Walimah</th>
+                    <th class="w3-teal w3-border">Location:-HVA</th>
+                    <th colspan="4"></th>
+                </thead>
+                <thead class="w3-brown">
+                    <th></th>
+                    <th>Bags</th>
+                    <th colspan="2" class="w3-right-align">NMT</th>
+                    <th colspan="2" class="w3-right-align">GMT</th>
+                </thead>
+                <thead>
+                    <th>Total</th>                    
+                    <th>6000</th>
+                    <th colspan="2" class="w3-right-align">240.000</th>
+                    <th colspan="2" class="w3-right-align">240.600</th>
+                </thead>
+                <tbody>
+                    <td>Ldd</td>
+                    <td>2000</td>
+                    <td colspan="2" class="w3-right-align">80.000</td>
+                    <td colspan="2" class="w3-right-align">80.200</td>
+                </tbody>
+                <tfoot class="w3-brown">
+                    <th>Balance</th>
+                    <th>4000</th>
+                    <th colspan="2" class="w3-right-align">160.000</th>
+                    <th colspan="2" class="w3-right-align">160.400</th>
+                </tfoot>
+            </table>
+            <table class="w3-table w3-small w3-bordered">
+                <thead  class=" w3-card w3-green">
+                    <th class="w3-border">Shipper Name :-</th>
+                    <th class="w3-border">Al Maha Foods Ltd</th>
+                    <th class="w3-border">Job no:-</th>
+                    <th class="w3-border">6008</th>
+                    <th class="w3-border">Inv no:-</th>
+                    <th class="w3-border">35</th>
+                </thead>
+                <thead>
+                    <th class="w3-teal w3-border">Marks:-Al Walimah</th>
+                    <th class="w3-teal w3-border">Location:-HVA</th>
+                    <th colspan="4"></th>
+                </thead>
+                <thead class="w3-brown">
+                    <th></th>
+                    <th>Bags</th>
+                    <th colspan="2" class="w3-right-align">NMT</th>
+                    <th colspan="2" class="w3-right-align">GMT</th>
+                </thead>
+                <thead>
+                    <th>Total</th>                    
+                    <th>6000</th>
+                    <th colspan="2" class="w3-right-align">240.000</th>
+                    <th colspan="2" class="w3-right-align">240.600</th>
+                </thead>
+                <tbody>
+                    <td>Ldd</td>
+                    <td>2000</td>
+                    <td colspan="2" class="w3-right-align">80.000</td>
+                    <td colspan="2" class="w3-right-align">80.200</td>
+                </tbody>
+                <tfoot class="w3-brown">
+                    <th>Balance</th>
+                    <th>4000</th>
+                    <th colspan="2" class="w3-right-align">160.000</th>
+                    <th colspan="2" class="w3-right-align">160.400</th>
+                </tfoot>
+            </table>-->
+           <!--<div class="w3-row-padding">
+                <div class="w3-col l8 w3-pale-yellow w3-border" style="font-weight: bold;">Shipper Name</div>
+                <div class="w3-col l2 w3-pale-yellow w3-border" style="font-weight: bold;">Job No</div>
+                <div class="w3-col l2 w3-pale-yellow w3-border" style="font-weight: bold;">INV No</div>                
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l8 w3-border" >Al Maha Foods Pvt Ltd</div>
+                <div class="w3-col l2 w3-border" >6008</div>
+                <div class="w3-col l2 w3-border" >35</div>                
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l12  w3-border" >Marks:- Al Walimah - 04x10Kgs - Axat</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-border" ></div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">Bags</div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">NMT</div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">GMT</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-border" >Total</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">6000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">240.000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">240.600</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-border" >Carting</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">2000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">80.000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">80.200</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="font-weight: bold;">Balance</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">2000</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">80.000</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">80.200</div>
+            </div>
+            <br>
+            <div class="w3-row-padding">
+                <div class="w3-col l8 w3-pale-yellow w3-border" style="font-weight: bold;">Shipper Name</div>
+                <div class="w3-col l2 w3-pale-yellow w3-border" style="font-weight: bold;">Job No</div>
+                <div class="w3-col l2 w3-pale-yellow w3-border" style="font-weight: bold;">INV No</div>                
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l8 w3-border" >Al Maha Foods Pvt Ltd</div>
+                <div class="w3-col l2 w3-border" >6008</div>
+                <div class="w3-col l2 w3-border" >35</div>                
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l12  w3-border" >Marks:- Al Walimah - 04x10Kgs - Axat</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-  border" ></div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">Bags</div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">NMT</div>
+                <div class="w3-col l3  w3-border" style="text-align: right; font-weight: bold;">GMT</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-border" >Total</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">6000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">240.000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">240.600</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3  w3-border" >Ldd</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">2000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">80.000</div>
+                <div class="w3-col l3  w3-border" style="text-align: right;">80.200</div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="font-weight: bold;">Balance</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">2000</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">80.000</div>
+                <div class="w3-col l3 w3-pale-yellow w3-border" style="text-align: right; font-weight: bold;">80.200</div>
+            </div>-->
         </div>
         </div>
     </div>
@@ -98,13 +259,16 @@
     document.getElementById("gpdate").value=date;
     var xhttp=new XMLHttpRequest();
     var list=document.getElementById("vesselList");
+    list.innerHTML="";
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
             var myobj=JSON.parse(this.responseText);
             myobj.forEach((myobj,index)=>{
                 var options=document.createElement("option");
-
+                options.innerHTML=myobj.VesselName;
+                list.appendChild(options);
             });
+            
         }
     }
     xhttp.open("GET","/getvessellist",true);

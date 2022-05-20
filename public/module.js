@@ -28,3 +28,6 @@ function displaymodal(x){
     x.style.display="block";
     inputs[0].focus();
 }
+function removetbodies(x){
+    while(x[0])x[0].parentNode.removeChild(x[0]);
+}

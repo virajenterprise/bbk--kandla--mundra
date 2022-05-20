@@ -63,7 +63,8 @@ function searchjob(){
     var fdata="jobnosearch="+jobnosearch.value+"&shippersearch="+shippersearch.value+"&sbsearch="+sbsearch.value;
     var table=document.getElementById("jobsearchtable");
     var tbodies=table.getElementsByTagName("tbody");
-    while(tbodies[0])tbodies[0].parentNode.removeChild(tbodies[0]);
+    removetbodies(tbodies);
+    //while(tbodies[0])tbodies[0].parentNode.removeChild(tbodies[0]);
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
@@ -100,7 +101,8 @@ function selectjobsearched(x){
     var jobno=x.parentNode.parentNode.childNodes[0].innerHTML;
     var table=document.getElementById("markstable");
     var tbodies=table.getElementsByTagName("tbody");
-    while(tbodies[0])tbodies[0].parentNode.removeChild(tbodies[0]);
+    removetbodies(tbodies);
+    //while(tbodies[0])tbodies[0].parentNode.removeChild(tbodies[0]);
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
@@ -152,8 +154,8 @@ function selectjobsearched(x){
                 cell4.setAttribute("class","w3-border w3-center");
                 cell5.setAttribute("class","w3-border w3-center");
                 cell6.setAttribute("class","w3-border w3-center");
-                cell7.setAttribute("class","w3-border w3-center");
-                cell8.setAttribute("class","w3-border w3-center");
+                cell7.setAttribute("class","w3-border w3-right-align");
+                cell8.setAttribute("class","w3-border w3-right-align");
                 cell9.setAttribute("class","w3-border w3-center");
                 cell10.setAttribute("class","w3-border");
                 cell11.setAttribute("class","w3-border");
@@ -278,6 +280,7 @@ function editjob(){
 }
 function updateshipperlist(){
     var list=document.getElementById("shippernamelist");
+    list.innerHTML="";
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
@@ -502,4 +505,117 @@ function deletemarksdetails(x){
     xhttp.open("delete","/deletemarksdetails?marksid="+marksid,true);
     xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
     xhttp.send();    
+}
+function displayjobfromvesselname(){
+    var vesselname=document.getElementById("VesselNameSelected");
+    var selectobject=document.getElementById("jobnoselected");
+    selectobject.innerHTML="";
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            myobj.forEach((myobj,indes)=>{
+                var options=document.createElement("option");
+                options.value=myobj.jobno;
+                options.innerHTML=myobj.jobno;
+                selectobject.appendChild(options);
+            });
+        }
+    }
+    xhttp.open("GET","/getjobdetails?vesselname="+vesselname.value,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+function displaymarksfromjobno(){
+    var jobno=document.getElementById("jobnoselected").value;
+    var selectobject=document.getElementById("markspackingselected");
+    selectobject.innerHTML=""
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);            
+            myobj.forEach((myobj,index)=>{
+                var options1=document.createElement("option");                
+                options1.id=myobj.markspacking_ID;
+                options1.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
+                options1.value=myobj.markspacking_ID;
+                selectobject.appendChild(options1);                
+            });
+        }
+    }
+    xhttp.open("GET","/getmarkspackingdetails?jobno="+jobno,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+function creategatepass(){
+    var gatepassid=document.getElementById("gatePassID");
+    if((gatepassid.value).length>0){
+        console.log("if is responding");
+    }else{
+        var truckno=document.getElementById("truckno");
+        if(truckno.value==""){
+            alert("Please Entery Truck No");
+            return;
+        }
+        var markspackingselected=document.getElementById("markspackingselected");
+        if(markspackingselected.value==""){
+            alert("Please Enter Job and Marks Details");
+            return;
+        }
+        var bagsgatepass=document.getElementById("bagsgatepass");
+        if(bagsgatepass.value==""){
+            alert("Please Enter Bags ");
+            return;
+        }
+        var table=document.getElementById("gatepassupdatetable");
+        var tbodies=table.getElementsByTagName("tbody");
+        removetbodies(tbodies);
+        var fdata="truckno="+truckno.value+"&markspackingselected="+markspackingselected.value+"&bagsgatepass="+bagsgatepass.value;
+        console.log(fdata);
+        var xhttp=new XMLHttpRequest();
+        xhttp.onreadystatechange=function(){
+            if(this.readyState==4&&this.status==200){
+                var myobj=JSON.parse(this.responseText);
+                var tbody=document.createElement("tbody");
+                    myobj.forEach((myobj,index)=>{                    
+                    var row=tbody.insertRow(-1);
+                    var cell1=row.insertCell(0);
+                    var cell2=row.insertCell(1);
+                    var cell3=row.insertCell(2);
+                    var cell4=row.insertCell(3);
+                    var cell5=row.insertCell(4);
+                    var cell6=row.insertCell(5);
+                    var cell7=row.insertCell(6);
+                    var cell8=row.insertCell(7);
+                    var button=document.createElement("button");
+                    var button1=document.createElement("button");
+                    cell1.setAttribute("class","w3-hide");
+                    cell2.setAttribute("class","w3-border w3-center");
+                    cell3.setAttribute("class","w3-border w3-left-align");
+                    cell4.setAttribute("class","w3-border w3-center");
+                    cell5.setAttribute("class","w3-border w3-right-align");
+                    cell6.setAttribute("class","w3-border w3-right-align");
+                    cell7.setAttribute("class","w3-border");
+                    cell8.setAttribute("class","w3-border");
+                    button.setAttribute("class","w3-button w3-input w3-teal");
+                    button1.setAttribute("class","w3-button w3-input w3-deep-orange");                    
+                    button.innerHTML="Edit";
+                    button1.innerHTML="X";
+                    cell1.innerHTML=myobj.gatepassGrid_ID;
+                    cell2.innerHTML=myobj.jobno;
+                    cell3.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
+                    cell4.innerHTML=myobj.bags;
+                    cell5.innerHTML=(myobj.bags*myobj.eachbagNweigh/1000).toFixed(3);
+                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);
+                    cell7.appendChild(button);
+                    cell8.appendChild(button1);
+                    document.getElementById("gatePassID").value=myobj.gatepass_ID;
+                });
+                table.appendChild(tbody);
+            }
+        }
+        xhttp.open("POST","/createnewgatepass",true);
+        xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+        xhttp.send(fdata);
+    }
 }

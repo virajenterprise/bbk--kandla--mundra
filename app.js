@@ -50,6 +50,9 @@ app.put('/editmarkspacking',ajax.editmarkspacking);
 app.delete('/deletemarksdetails',ajax.deletemarksdetails);
 app.get('/GP',ajax.gp);
 app.get('/getvessellist',ajax.getvessellist);
+app.get('/getjobdetails',ajax.getjobdetails);
+app.get('/getmarkspackingdetails',ajax.getmarkspackingdetails);
+app.post('/createnewgatepass',ajax.createnewgatepass);
 
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});
