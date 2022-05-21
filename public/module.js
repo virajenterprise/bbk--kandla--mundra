@@ -19,12 +19,14 @@ function selectedid(x){
 function hidemodal(x){
     x.style.display="none";
 }
-function displaymodal(x){        
-    var inputs=x.getElementsByTagName('input');
+function displaymodal(x){
+    var inputs=x.getElementsByTagName('input');    
     var i=0;
     while(i<inputs.length){
-        document.getElementById(inputs[i++].id).value="";
+        inputs[i++].value="";        
     }
+    var tbody=x.getElementsByTagName('tbody');
+    removetbodies(tbody);
     x.style.display="block";
     inputs[0].focus();
 }

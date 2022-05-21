@@ -550,7 +550,57 @@ function displaymarksfromjobno(){
 function creategatepass(){
     var gatepassid=document.getElementById("gatePassID");
     if((gatepassid.value).length>0){
-        console.log("if is responding");
+        var markspackingselected=document.getElementById("markspackingselected");
+        var bagsgatepass=document.getElementById("bagsgatepass");
+        var gatepassid=document.getElementById("gatePassID");
+        var table=document.getElementById("gatepassupdatetable");
+        var tbodies=table.getElementsByTagName("tbody");
+        console.log(tbodies);
+        console.log(tbodies.length);
+        console.log(tbodies[tbodies.length-1]);
+        var fdata="markspackingselected="+markspackingselected.value+"&bagsgatepass="+bagsgatepass.value+"&gatepassid="+gatepassid.value;
+        var xhttp=new XMLHttpRequest();
+        xhttp.onreadystatechange=function(){
+            if(this.readyState==4&&this.status==200){
+                var myobj=JSON.parse(this.responseText);                
+                myobj.forEach((myobj,index)=>{                    
+                    var row=tbodies[tbodies.length-1].insertRow(-1);                    
+                    var cell1=row.insertCell(0);
+                    var cell2=row.insertCell(1);
+                    var cell3=row.insertCell(2);
+                    var cell4=row.insertCell(3);
+                    var cell5=row.insertCell(4);
+                    var cell6=row.insertCell(5);
+                    var cell7=row.insertCell(6);
+                    var cell8=row.insertCell(7);
+                    var button=document.createElement("button");
+                    var button1=document.createElement("button");
+                    cell1.setAttribute("class","w3-hide");
+                    cell2.setAttribute("class","w3-border w3-center");
+                    cell3.setAttribute("class","w3-border w3-left-align");
+                    cell4.setAttribute("class","w3-border w3-center");
+                    cell5.setAttribute("class","w3-border w3-right-align");
+                    cell6.setAttribute("class","w3-border w3-right-align");
+                    cell7.setAttribute("class","w3-border");
+                    cell8.setAttribute("class","w3-border");
+                    button.setAttribute("class","w3-button w3-input w3-teal");
+                    button1.setAttribute("class","w3-button w3-input w3-deep-orange");                    
+                    button.innerHTML="Edit";
+                    button1.innerHTML="X";
+                    cell1.innerHTML=myobj.gatepassGrid_ID;
+                    cell2.innerHTML=myobj.jobno;
+                    cell3.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
+                    cell4.innerHTML=myobj.bags;
+                    cell5.innerHTML=(myobj.bags*myobj.eachbagNweigh/1000).toFixed(3);
+                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);
+                    cell7.appendChild(button);
+                    cell8.appendChild(button1);
+                });
+            }
+        }
+        xhttp.open("POST","/updategatepass",true);
+        xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+        xhttp.send(fdata);
     }else{
         var truckno=document.getElementById("truckno");
         if(truckno.value==""){
@@ -575,8 +625,8 @@ function creategatepass(){
         var xhttp=new XMLHttpRequest();
         xhttp.onreadystatechange=function(){
             if(this.readyState==4&&this.status==200){
-                var myobj=JSON.parse(this.responseText);
                 var tbody=document.createElement("tbody");
+                var myobj=JSON.parse(this.responseText);                
                     myobj.forEach((myobj,index)=>{                    
                     var row=tbody.insertRow(-1);
                     var cell1=row.insertCell(0);
@@ -618,4 +668,147 @@ function creategatepass(){
         xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
         xhttp.send(fdata);
     }
+}
+function searcholdgatepassbtn(){
+    var truckno=document.getElementById("searchtrknum");
+    var shippername=document.getElementById("searchnumship");
+    var jobno=document.getElementById("searchnumjob");
+    var date=document.getElementById("searchnumdate");
+    var table=document.getElementById("searcholdgatepasstable");
+    removetbodies(table.getElementsByTagName("tbody"));    
+    var fdata="truckno="+truckno.value+"&shippername="+shippername.value+"&jobno="+jobno.value+"&date="+date.value;
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            myobj.forEach((myobj,index)=>{
+                var tbody=document.createElement("tbody");
+                var row=tbody.insertRow(-1);
+                var cell1=row.insertCell(0);
+                var cell2=row.insertCell(1);
+                var cell3=row.insertCell(2);
+                var cell4=row.insertCell(3);
+                var cell5=row.insertCell(4);
+                var cell6=row.insertCell(5);
+                var cell7=row.insertCell(6);
+                var cell8=row.insertCell(7);
+                var cell9=row.insertCell(8);                
+                var button=document.createElement("button");                
+                cell1.setAttribute("class","w3-border");
+                cell1.setAttribute("style","white-space: nowrap;");
+                cell2.setAttribute("class","w3-border");
+                cell2.setAttribute("style","white-space: nowrap;");
+                cell3.setAttribute("class","w3-border");
+                cell4.setAttribute("class","w3-border");
+                cell5.setAttribute("class","w3-border");
+                cell5.setAttribute("style","white-space: nowrap;");
+                cell6.setAttribute("class","w3-border");
+                cell7.setAttribute("class","w3-border");
+                cell8.setAttribute("class","w3-border");
+                cell9.setAttribute("class","w3-border");                
+                button.setAttribute("class","w3-button w3-teal w3-input");
+                button.setAttribute("onclick","selectsearcholdgatepassbtn(this)");
+                button.innerHTML="Select";                
+                cell1.innerHTML=myobj.gatepass_ID;
+                cell2.innerHTML=myobj.TruckNo;
+                cell3.innerHTML=myobj.jobno;
+                cell4.innerHTML=myobj.shipper_name;
+                cell5.innerHTML=myobj.datetime;
+                cell6.innerHTML=myobj.makrs;
+                cell7.innerHTML=myobj.packing;
+                cell8.innerHTML=myobj.location;
+                cell9.appendChild(button);                
+                table.appendChild(tbody);
+                truckno.value="";
+                shippername.value="";
+                jobno.value="";
+                date.value="";
+            });
+        }
+    }
+    xhttp.open("GET","/searcholdgatepassbtn?"+fdata,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+function selectsearcholdgatepassbtn(x){
+    var gatepassno=x.parentNode.parentNode.childNodes[0].innerHTML;
+    var table=document.getElementById("gatepassupdatetable");
+    removetbodies(table.getElementsByTagName("tbody"));
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            var myobj1=myobj[0];
+            var myobj2=myobj[1];
+            myobj1.forEach((myobj1,index)=>{
+                document.getElementById("gatePassID").value=myobj1.gatepass_ID;
+                document.getElementById("gpdate").value=new Date(myobj1.datetime);
+                document.getElementById("VesselNameSelected").value=myobj1.VesselName;
+                displayjobfromvesselname();
+                document.getElementById("truckno").value=myobj1.TruckNo;                
+            });
+            var tbody=document.createElement("tbody");
+            myobj2.forEach((myobj2,index)=>{                
+                var row=tbody.insertRow(-1);
+                var cell1=row.insertCell(0);
+                var cell2=row.insertCell(1);
+                var cell3=row.insertCell(2);
+                var cell4=row.insertCell(3);
+                var cell5=row.insertCell(4);
+                var cell6=row.insertCell(5);
+                var cell7=row.insertCell(6);
+                var cell8=row.insertCell(7);
+                var button=document.createElement("button");
+                var button1=document.createElement("button");
+                cell1.setAttribute("class","w3-border w3-hide");
+                cell2.setAttribute("class","w3-border w3-center");
+                cell3.setAttribute("class","w3-border w3-left-align");
+                cell4.setAttribute("class","w3-border w3-center");
+                cell5.setAttribute("class","w3-border w3-right-align");
+                cell6.setAttribute("class","w3-border w3-right-align");
+                cell7.setAttribute("class","w3-border");
+                cell8.setAttribute("class","w3-border");
+                button.setAttribute("class","w3-button w3-teal");
+                button1.setAttribute("class","w3-button w3-deep-orange");
+                button.innerHTML="Edit";
+                button1.innerHTML="Del";
+                cell1.innerHTML=myobj2.markspacking_ID;
+                cell2.innerHTML=myobj2.jobno;
+                cell3.innerHTML=myobj2.makrs+"-"+myobj2.packing+"-"+myobj2.location;
+                cell4.innerHTML=myobj2.bags;
+                cell5.innerHTML=(myobj2.bags*myobj2.eachbagNweigh/1000).toFixed(3);
+                cell6.innerHTML=(myobj2.bags*myobj2.eachbagGweigh/1000).toFixed(3);
+                cell7.appendChild(button);
+                cell8.appendChild(button1);
+                table.appendChild(tbody);
+                hidemodal(document.getElementById("searcholdgatepass"));                
+            });
+            tablecalc1(table);
+        }
+    }
+    xhttp.open("GET","/selectsearcholdgatepassbtn?gatepassno="+gatepassno,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+function tablecalc1(x){    
+    var tbodies=x.getElementsByTagName("tbody");    
+    var rows=tbodies[0].getElementsByTagName("tr");    
+    var i=0;
+    var j=0;
+    var h=0;
+    var bags=0;
+    var nmt=0;
+    var gmt=0;
+    while(i<rows.length){        
+        bags=bags+parseFloat(rows[i++].getElementsByTagName("td")[3].innerHTML);
+    }
+    while(j<rows.length){        
+        nmt=nmt+parseFloat(rows[j++].getElementsByTagName("td")[4].innerHTML);
+    }
+    while(h<rows.length){        
+        gmt=gmt+parseFloat(rows[h++].getElementsByTagName("td")[5].innerHTML);
+    }
+    x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[1].innerHTML=bags;
+    x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[2].innerHTML=nmt.toFixed(3);
+    x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[3].innerHTML=gmt.toFixed(3);
 }

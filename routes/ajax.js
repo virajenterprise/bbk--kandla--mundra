@@ -19,7 +19,7 @@ module.exports = {
         });
     },
     searchjob:(req,res)=>{
-        let query="SELECT jobtable.jobno,shippermaster.shipper_name,jobtable.shippingbillno FROM (jobtable INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id) WHERE jobtable.jobno LIKE '%"+req.query.jobnosearch+"%' AND jobtable.shipperName LIKE '%"+req.query.shippersearch+"%' AND jobtable.shippingbillno LIKE '%"+req.query.sbsearch+"%'";
+        let query="SELECT jobtable.jobno,shippermaster.shipper_name,jobtable.shippingbillno FROM (jobtable INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id) WHERE jobtable.jobno LIKE '%"+req.query.jobnosearch+"%' AND shippermaster.shipper_name LIKE '%"+req.query.shippersearch+"%' AND jobtable.shippingbillno LIKE '%"+req.query.sbsearch+"%'";
         let sql=conn.query(query,(err,results)=>{
             if(err){
                 console.log(err);
@@ -172,6 +172,50 @@ module.exports = {
                                 res.send(results3);
                             }
                         });
+                    }
+                });
+            }
+        });
+    },
+    searcholdgatepassbtn:(req,res)=>{
+        let query="SELECT gatepass.gatepass_ID,gatepass.TruckNo,jobtable.jobno,shippermaster.shipper_name,DATE_FORMAT(gatepass.datetime,'%d-%m-%Y') AS datetime,markspacking.makrs,markspacking.packing,markspacking.location FROM ((((jobtable INNER JOIN markspacking ON markspacking.jobtableref=jobtable.jobtable_id)INNER JOIN gatepassgrid ON markspacking.markspacking_ID=gatepassgrid.markspackingid)INNER JOIN gatepass ON gatepass.gatepass_ID=gatepassgrid.gatepassid)INNER JOIN shippermaster ON shippermaster.shippermaster_id=jobtable.shipperName)WHERE gatepass.TruckNo LIKE '%"+req.query.truckno+"%' AND shippermaster.shipper_name LIKE '%"+req.query.shippername+"%'AND jobtable.jobno LIKE '%"+req.query.jobno+"%' AND gatepass.datetime LIKE '%"+req.query.date+"%'ORDER BY gatepass.gatepass_ID";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send(results);
+            }
+        });
+    },
+    selectsearcholdgatepassbtn:(req,res)=>{
+        let query="SELECT gatepass.gatepass_ID,gatepass.datetime,jobtable.VesselName,gatepass.TruckNo FROM (((gatepass INNER JOIN gatepassgrid ON gatepass.gatepass_ID=gatepassgrid.gatepassid)INNER JOIN markspacking ON markspacking.markspacking_ID=gatepassgrid.markspackingid)INNER JOIN jobtable ON jobtable.jobtable_id=markspacking.jobtableref)WHERE gatepass.gatepass_ID='"+req.query.gatepassno+"'";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                let query2="SELECT markspacking.markspacking_ID,jobtable.jobno,markspacking.makrs,markspacking.packing,markspacking.location,gatepassgrid.bags,markspacking.eachbagNweigh,markspacking.eachbagGweigh FROM (((gatepassgrid INNER JOIN markspacking ON markspacking.markspacking_ID=gatepassgrid.markspackingid)INNER JOIN jobtable ON jobtable.jobtable_id=markspacking.jobtableref)INNER JOIN gatepass ON gatepass.gatepass_ID=gatepassgrid.gatepassid)WHERE gatepass.gatepass_ID='"+req.query.gatepassno+"'";
+                conn.query(query2,(err,results2)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.send([results,results2]);
+                    }
+                });
+            }
+        });
+    },
+    updategatepass:(req,res)=>{
+        let query="INSERT INTO gatepassgrid (gatepassgrid.markspackingid,gatepassgrid.bags,gatepassgrid.gatepassid)VALUES ('"+req.body.markspackingselected+"','"+req.body.bagsgatepass+"','"+req.body.gatepassid+"')";
+        conn.query(query,(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                let query2="SELECT jobtable.jobno,markspacking.makrs,markspacking.packing,markspacking.eachbagNweigh,markspacking.eachbagGweigh,gatepassgrid.bags,gatepass.gatepass_ID,gatepassgrid.gatepassGrid_ID,markspacking.location FROM(((gatepassgrid INNER JOIN gatepass ON gatepassgrid.gatepassid=gatepass.gatepass_ID)INNER JOIN markspacking ON gatepassgrid.markspackingid=markspacking.markspacking_ID)INNER JOIN jobtable ON markspacking.jobtableref=jobtable.jobtable_id)WHERE gatepassgrid.gatepassGrid_ID='"+results.insertId+"'";
+                conn.query(query2,(err,results2)=>{
+                    if(err){
+                        console.log(err);
+                    }else{                        
+                        res.send(results2);
                     }
                 });
             }

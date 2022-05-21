@@ -53,6 +53,9 @@ app.get('/getvessellist',ajax.getvessellist);
 app.get('/getjobdetails',ajax.getjobdetails);
 app.get('/getmarkspackingdetails',ajax.getmarkspackingdetails);
 app.post('/createnewgatepass',ajax.createnewgatepass);
+app.get('/searcholdgatepassbtn',ajax.searcholdgatepassbtn);
+app.get('/selectsearcholdgatepassbtn',ajax.selectsearcholdgatepassbtn);
+app.post('/updategatepass',ajax.updategatepass);
 
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});
