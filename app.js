@@ -56,6 +56,8 @@ app.post('/createnewgatepass',ajax.createnewgatepass);
 app.get('/searcholdgatepassbtn',ajax.searcholdgatepassbtn);
 app.get('/selectsearcholdgatepassbtn',ajax.selectsearcholdgatepassbtn);
 app.post('/updategatepass',ajax.updategatepass);
-
+app.delete('/deletegatepassgrid',ajax.deletegatepassgrid);
+app.get('/secondcontainerdetailsjoball',ajax.secondcontainerdetailsjoball);
+app.get('/secondcontainerdetailsmarksselected',ajax.secondcontainerdetailsmarksselected);
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});

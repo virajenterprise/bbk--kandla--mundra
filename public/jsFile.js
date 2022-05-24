@@ -1,3 +1,4 @@
+
 window.onload=function(){
     updateshipperlist();    
 }
@@ -535,12 +536,11 @@ function displaymarksfromjobno(){
         if(this.readyState==4&&this.status==200){
             var myobj=JSON.parse(this.responseText);            
             myobj.forEach((myobj,index)=>{
-                var options1=document.createElement("option");                
-                options1.id=myobj.markspacking_ID;
+                var options1=document.createElement("option");
                 options1.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
                 options1.value=myobj.markspacking_ID;
                 selectobject.appendChild(options1);                
-            });
+            });displaydetailssecondcontainerjoball();
         }
     }
     xhttp.open("GET","/getmarkspackingdetails?jobno="+jobno,true);
@@ -551,18 +551,23 @@ function creategatepass(){
     var gatepassid=document.getElementById("gatePassID");
     if((gatepassid.value).length>0){
         var markspackingselected=document.getElementById("markspackingselected");
+        if(markspackingselected.value==""){
+            alert("Please Enter Job and Marks Details");
+            return;
+        }
         var bagsgatepass=document.getElementById("bagsgatepass");
+        if(bagsgatepass.value==""){
+            alert("Please Enter Bags ");
+            return;}
         var gatepassid=document.getElementById("gatePassID");
         var table=document.getElementById("gatepassupdatetable");
-        var tbodies=table.getElementsByTagName("tbody");
-        console.log(tbodies);
-        console.log(tbodies.length);
-        console.log(tbodies[tbodies.length-1]);
+        var tbodies=table.getElementsByTagName("tbody");        
         var fdata="markspackingselected="+markspackingselected.value+"&bagsgatepass="+bagsgatepass.value+"&gatepassid="+gatepassid.value;
         var xhttp=new XMLHttpRequest();
         xhttp.onreadystatechange=function(){
             if(this.readyState==4&&this.status==200){
-                var myobj=JSON.parse(this.responseText);                
+                var myobj=JSON.parse(this.responseText);
+                console.log(myobj);
                 myobj.forEach((myobj,index)=>{                    
                     var row=tbodies[tbodies.length-1].insertRow(-1);                    
                     var cell1=row.insertCell(0);
@@ -570,32 +575,30 @@ function creategatepass(){
                     var cell3=row.insertCell(2);
                     var cell4=row.insertCell(3);
                     var cell5=row.insertCell(4);
-                    var cell6=row.insertCell(5);
-                    var cell7=row.insertCell(6);
-                    var cell8=row.insertCell(7);
-                    var button=document.createElement("button");
+                    var cell6=row.insertCell(5);                    
+                    var cell8=row.insertCell(6);
                     var button1=document.createElement("button");
                     cell1.setAttribute("class","w3-hide");
                     cell2.setAttribute("class","w3-border w3-center");
                     cell3.setAttribute("class","w3-border w3-left-align");
+                    cell3.setAttribute("colspan","2");
                     cell4.setAttribute("class","w3-border w3-center");
                     cell5.setAttribute("class","w3-border w3-right-align");
-                    cell6.setAttribute("class","w3-border w3-right-align");
-                    cell7.setAttribute("class","w3-border");
-                    cell8.setAttribute("class","w3-border");
-                    button.setAttribute("class","w3-button w3-input w3-teal");
+                    cell6.setAttribute("class","w3-border w3-right-align");                    
+                    cell8.setAttribute("class","w3-border");                    
                     button1.setAttribute("class","w3-button w3-input w3-deep-orange");                    
-                    button.innerHTML="Edit";
-                    button1.innerHTML="X";
+                    button1.setAttribute("onclick","deletegatepassgrid(this)");                    
+                    button1.innerHTML="Del";
                     cell1.innerHTML=myobj.gatepassGrid_ID;
                     cell2.innerHTML=myobj.jobno;
                     cell3.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
                     cell4.innerHTML=myobj.bags;
                     cell5.innerHTML=(myobj.bags*myobj.eachbagNweigh/1000).toFixed(3);
-                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);
-                    cell7.appendChild(button);
+                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);                    
                     cell8.appendChild(button1);
                 });
+                tablecalc1(table);
+                displaydetailssecondcontainermarkswise();
             }
         }
         xhttp.open("POST","/updategatepass",true);
@@ -620,8 +623,7 @@ function creategatepass(){
         var table=document.getElementById("gatepassupdatetable");
         var tbodies=table.getElementsByTagName("tbody");
         removetbodies(tbodies);
-        var fdata="truckno="+truckno.value+"&markspackingselected="+markspackingselected.value+"&bagsgatepass="+bagsgatepass.value;
-        console.log(fdata);
+        var fdata="truckno="+truckno.value+"&markspackingselected="+markspackingselected.value+"&bagsgatepass="+bagsgatepass.value;        
         var xhttp=new XMLHttpRequest();
         xhttp.onreadystatechange=function(){
             if(this.readyState==4&&this.status==200){
@@ -634,34 +636,32 @@ function creategatepass(){
                     var cell3=row.insertCell(2);
                     var cell4=row.insertCell(3);
                     var cell5=row.insertCell(4);
-                    var cell6=row.insertCell(5);
-                    var cell7=row.insertCell(6);
-                    var cell8=row.insertCell(7);
-                    var button=document.createElement("button");
+                    var cell6=row.insertCell(5);                    
+                    var cell8=row.insertCell(6);                    
                     var button1=document.createElement("button");
                     cell1.setAttribute("class","w3-hide");
                     cell2.setAttribute("class","w3-border w3-center");
                     cell3.setAttribute("class","w3-border w3-left-align");
+                    cell3.setAttribute("colspam","2");
                     cell4.setAttribute("class","w3-border w3-center");
                     cell5.setAttribute("class","w3-border w3-right-align");
-                    cell6.setAttribute("class","w3-border w3-right-align");
-                    cell7.setAttribute("class","w3-border");
-                    cell8.setAttribute("class","w3-border");
-                    button.setAttribute("class","w3-button w3-input w3-teal");
+                    cell6.setAttribute("class","w3-border w3-right-align");                    
+                    cell8.setAttribute("class","w3-border");                    
                     button1.setAttribute("class","w3-button w3-input w3-deep-orange");                    
-                    button.innerHTML="Edit";
-                    button1.innerHTML="X";
+                    button1.setAttribute("onclick","deletegatepassgrid(this)");                    
+                    button1.innerHTML="Del";
                     cell1.innerHTML=myobj.gatepassGrid_ID;
                     cell2.innerHTML=myobj.jobno;
                     cell3.innerHTML=myobj.makrs+"-"+myobj.packing+"-"+myobj.location;
                     cell4.innerHTML=myobj.bags;
                     cell5.innerHTML=(myobj.bags*myobj.eachbagNweigh/1000).toFixed(3);
-                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);
-                    cell7.appendChild(button);
+                    cell6.innerHTML=(myobj.bags*myobj.eachbagGweigh/1000).toFixed(3);                    
                     cell8.appendChild(button1);
                     document.getElementById("gatePassID").value=myobj.gatepass_ID;
                 });
                 table.appendChild(tbody);
+                tablecalc1(table);
+                displaydetailssecondcontainermarkswise();
             }
         }
         xhttp.open("POST","/createnewgatepass",true);
@@ -747,7 +747,7 @@ function selectsearcholdgatepassbtn(x){
                 displayjobfromvesselname();
                 document.getElementById("truckno").value=myobj1.TruckNo;                
             });
-            var tbody=document.createElement("tbody");
+            var tbody=document.createElement("tbody");            
             myobj2.forEach((myobj2,index)=>{                
                 var row=tbody.insertRow(-1);
                 var cell1=row.insertCell(0);
@@ -755,30 +755,26 @@ function selectsearcholdgatepassbtn(x){
                 var cell3=row.insertCell(2);
                 var cell4=row.insertCell(3);
                 var cell5=row.insertCell(4);
-                var cell6=row.insertCell(5);
-                var cell7=row.insertCell(6);
-                var cell8=row.insertCell(7);
-                var button=document.createElement("button");
+                var cell6=row.insertCell(5);                
+                var cell8=row.insertCell(6);                
                 var button1=document.createElement("button");
                 cell1.setAttribute("class","w3-border w3-hide");
                 cell2.setAttribute("class","w3-border w3-center");
                 cell3.setAttribute("class","w3-border w3-left-align");
+                cell3.setAttribute("colspan","2");
                 cell4.setAttribute("class","w3-border w3-center");
                 cell5.setAttribute("class","w3-border w3-right-align");
-                cell6.setAttribute("class","w3-border w3-right-align");
-                cell7.setAttribute("class","w3-border");
-                cell8.setAttribute("class","w3-border");
-                button.setAttribute("class","w3-button w3-teal");
-                button1.setAttribute("class","w3-button w3-deep-orange");
-                button.innerHTML="Edit";
+                cell6.setAttribute("class","w3-border w3-right-align");                
+                cell8.setAttribute("class","w3-border");                
+                button1.setAttribute("class","w3-button w3-deep-orange");                
+                button1.setAttribute("onclick","deletegatepassgrid(this)");
                 button1.innerHTML="Del";
-                cell1.innerHTML=myobj2.markspacking_ID;
+                cell1.innerHTML=myobj2.gatepassGrid_ID;
                 cell2.innerHTML=myobj2.jobno;
                 cell3.innerHTML=myobj2.makrs+"-"+myobj2.packing+"-"+myobj2.location;
                 cell4.innerHTML=myobj2.bags;
                 cell5.innerHTML=(myobj2.bags*myobj2.eachbagNweigh/1000).toFixed(3);
-                cell6.innerHTML=(myobj2.bags*myobj2.eachbagGweigh/1000).toFixed(3);
-                cell7.appendChild(button);
+                cell6.innerHTML=(myobj2.bags*myobj2.eachbagGweigh/1000).toFixed(3);                
                 cell8.appendChild(button1);
                 table.appendChild(tbody);
                 hidemodal(document.getElementById("searcholdgatepass"));                
@@ -811,4 +807,314 @@ function tablecalc1(x){
     x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[1].innerHTML=bags;
     x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[2].innerHTML=nmt.toFixed(3);
     x.getElementsByTagName("tfoot")[0].getElementsByTagName("tr")[0].getElementsByTagName("th")[3].innerHTML=gmt.toFixed(3);
+}
+function deletegatepassgrid(x){
+    var row=x.parentNode.parentNode;
+    var table=x.parentNode.parentNode.parentNode;    
+    var gridid=row.childNodes[0].innerHTML;    
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=this.responseText;
+            if(myobj=="Deleted"){
+                table.removeChild(row);
+                tablecalc1(table.parentNode);
+                displaydetailssecondcontainermarkswise();
+            }
+        }
+    }
+    xhttp.open("delete","/deletegatepassgrid?gridid="+gridid,true);
+    xhttp.setRequestHeader('Content-Type','applcation/X-www-form-urlencoded');
+    xhttp.send();
+    
+}
+function displaydetailssecondcontainerjoball(){
+    var jobno=document.getElementById("jobnoselected");    
+    var div=document.getElementById("secondContainer");
+    div.innerHTML="";
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            var myobj1=myobj[0];
+            var myobj2=myobj[1];
+            myobj2.forEach((myobj2,index)=>{
+                myobj1.forEach((myobj1,index)=>{
+                var br=document.createElement("br");
+                var divCellRow1=document.createElement("div");                
+                var divrow1Cell1=document.createElement("div");
+                var divrow1Cell2=document.createElement("div");
+                var divrow1Cell3=document.createElement("div");
+                divCellRow1.setAttribute("class","w3-row-padding");                
+                divrow1Cell1.setAttribute("class","w3-col l8 w3-khaki w3-border");
+                divrow1Cell1.setAttribute("style","font-weight: bold");
+                divrow1Cell2.setAttribute("class","w3-col l2 w3-khaki w3-border");
+                divrow1Cell2.setAttribute("style","font-weight: bold");
+                divrow1Cell3.setAttribute("class","w3-col l2 w3-khaki w3-border");
+                divrow1Cell3.setAttribute("style","font-weight: bold");
+                divrow1Cell1.innerHTML="Shipper Name";
+                divrow1Cell2.innerHTML="Job No";
+                divrow1Cell3.innerHTML="Inv No";
+                var divCellRow2=document.createElement("div");
+                divCellRow2.setAttribute("class","w3-row-padding w3-blue-grey");
+                var divrow2cell1=document.createElement("div");
+                divrow2cell1.setAttribute("class","w3-col l8 w3-border");                
+                divrow2cell1.innerHTML=myobj1.shipper_name;
+                var divrow2cell2=document.createElement("div");
+                divrow2cell2.setAttribute("class","w3-col l2 w3-border");
+                divrow2cell2.innerHTML=myobj1.jobno;
+                var divrow2cell3=document.createElement("div");
+                divrow2cell3.setAttribute("class","w3-col l2 w3-border");
+                divrow2cell3.innerHTML=myobj1.invoiceno;
+                var divCellRow3=document.createElement("div");
+                divCellRow3.setAttribute("class","w3-row-padding");
+                var divrow3cell1=document.createElement("div");
+                divrow3cell1.setAttribute("class","w3-col l12  w3-border");
+                divrow3cell1.innerHTML="Marks:-"+myobj2.makrs+"---"+myobj2.packing+"---"+myobj2.location;
+                var divCellRow4=document.createElement("div");
+                divCellRow4.setAttribute("class","w3-row-padding");
+                var divrow4cell1=document.createElement("div");
+                divrow4cell1.setAttribute("class","w3-col l3  w3-border");
+                var divrow4cell2=document.createElement("div");
+                divrow4cell2.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow4cell2.setAttribute("style","text-align: right;");
+                divrow4cell2.innerHTML="Bags";
+                var divrow4cell3=document.createElement("div");
+                divrow4cell3.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow4cell3.setAttribute("style","text-align: right;");
+                divrow4cell3.innerHTML="NMT";
+                var divrow4cell4=document.createElement("div");
+                divrow4cell4.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow4cell4.setAttribute("style","text-align: right;");
+                divrow4cell4.innerHTML="GMT";
+                var divCellRow5=document.createElement("div");
+                divCellRow5.setAttribute("class","w3-row-padding");
+                var divrow5cell1=document.createElement("div");
+                divrow5cell1.setAttribute("class","w3-col l3  w3-border");
+                divrow5cell1.setAttribute("style","text-align: right; ");
+                divrow5cell1.innerHTML="Total";
+                var divrow5cell2=document.createElement("div");
+                divrow5cell2.setAttribute("class","w3-col l3  w3-border");
+                divrow5cell2.setAttribute("style","text-align: right;");
+                divrow5cell2.innerHTML=myobj2.bags;
+                var divrow5cell3=document.createElement("div");
+                divrow5cell3.setAttribute("class","w3-col l3  w3-border");
+                divrow5cell3.setAttribute("style","text-align: right;");
+                divrow5cell3.innerHTML=parseFloat(myobj2.bags*myobj2.eachbagNweigh/1000).toFixed(3);
+                var divrow5cell4=document.createElement("div");
+                divrow5cell4.setAttribute("class","w3-col l3  w3-border");
+                divrow5cell4.setAttribute("style","text-align: right;");
+                divrow5cell4.innerHTML=parseFloat(myobj2.bags*myobj2.eachbagGweigh/1000).toFixed(3);
+                var divCellRow6=document.createElement("div");
+                divCellRow6.setAttribute("class","w3-row-padding");
+                var divrow6cell1=document.createElement("div");
+                divrow6cell1.setAttribute("class","w3-col l3  w3-border");
+                divrow6cell1.setAttribute("style","text-align: right;");
+                divrow6cell1.innerHTML="Carting Done";
+                var divrow6cell2=document.createElement("div");
+                divrow6cell2.setAttribute("class","w3-col l3  w3-border");
+                divrow6cell2.setAttribute("style","text-align: right;");
+                divrow6cell2.innerHTML=myobj2.bagscarted;
+                var divrow6cell3=document.createElement("div");
+                divrow6cell3.setAttribute("class","w3-col l3  w3-border");
+                divrow6cell3.setAttribute("style","text-align: right;");
+                divrow6cell3.innerHTML=parseFloat(myobj2.bagscarted*myobj2.eachbagNweigh/1000).toFixed(3);
+                var divrow6cell4=document.createElement("div");
+                divrow6cell4.setAttribute("class","w3-col l3  w3-border");
+                divrow6cell4.setAttribute("style","text-align: right;");
+                divrow6cell4.innerHTML=parseFloat(myobj2.bagscarted*myobj2.eachbagGweigh/1000).toFixed(3);
+                var divCellRow7=document.createElement("div");
+                divCellRow7.setAttribute("class","w3-row-padding");
+                var divrow7cell1=document.createElement("div");
+                divrow7cell1.setAttribute("class","w3-col l3  w3-border");
+                divrow7cell1.setAttribute("style","text-align: right;");
+                divrow7cell1.innerHTML="Balance";
+                var divrow7cell2=document.createElement("div");
+                divrow7cell2.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow7cell2.setAttribute("style","text-align: right;");
+                divrow7cell2.innerHTML=parseFloat(myobj2.bags-myobj2.bagscarted);
+                var divrow7cell3=document.createElement("div");
+                divrow7cell3.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow7cell3.setAttribute("style","text-align: right;");
+                divrow7cell3.innerHTML=parseFloat((myobj2.bags*myobj2.eachbagNweigh/1000)-(myobj2.bagscarted*myobj2.eachbagNweigh/1000)).toFixed(3);
+                var divrow7cell4=document.createElement("div");
+                divrow7cell4.setAttribute("class","w3-col l3  w3-border w3-blue-grey");
+                divrow7cell4.setAttribute("style","text-align: right;");
+                divrow7cell4.innerHTML=parseFloat((myobj2.bags*myobj2.eachbagGweigh/1000)-(myobj2.bagscarted*myobj2.eachbagGweigh/1000)).toFixed(3);
+                div.appendChild(divCellRow1);
+                div.appendChild(divCellRow2);
+                div.appendChild(divCellRow3);
+                div.appendChild(divCellRow4);
+                div.appendChild(divCellRow5);
+                div.appendChild(divCellRow6);
+                div.appendChild(divCellRow7);
+                div.appendChild(br);
+                divCellRow1.appendChild(divrow1Cell1);
+                divCellRow1.appendChild(divrow1Cell2);
+                divCellRow1.appendChild(divrow1Cell3);
+                divCellRow2.appendChild(divrow2cell1);
+                divCellRow2.appendChild(divrow2cell2);
+                divCellRow2.appendChild(divrow2cell3);
+                divCellRow3.appendChild(divrow3cell1);
+                divCellRow4.appendChild(divrow4cell1);
+                divCellRow4.appendChild(divrow4cell2);
+                divCellRow4.appendChild(divrow4cell3);
+                divCellRow4.appendChild(divrow4cell4);
+                divCellRow4.appendChild(divrow5cell1);
+                divCellRow4.appendChild(divrow5cell2);
+                divCellRow4.appendChild(divrow5cell3);
+                divCellRow4.appendChild(divrow5cell4);
+                divCellRow4.appendChild(divrow6cell1);
+                divCellRow4.appendChild(divrow6cell2);
+                divCellRow4.appendChild(divrow6cell3);
+                divCellRow4.appendChild(divrow6cell4);
+                divCellRow4.appendChild(divrow7cell1);
+                divCellRow4.appendChild(divrow7cell2);
+                divCellRow4.appendChild(divrow7cell3);
+                divCellRow4.appendChild(divrow7cell4);
+                });                
+            });
+        }
+    }
+    xhttp.open("GET","/secondcontainerdetailsjoball?jobno="+jobno.value,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
+function displaydetailssecondcontainermarkswise(){
+    var marksid=document.getElementById("markspackingselected");
+    var div=document.getElementById("secondContainer");
+    div.innerHTML="";
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var myobj=JSON.parse(this.responseText);
+            console.log(myobj);
+            myobj.forEach((myobj,index)=>{
+                var br=document.createElement("br");
+                var divRow1=document.createElement("div")
+                divRow1.setAttribute("class","w3-row-padding");
+                var divRow2=document.createElement("div");
+                divRow2.setAttribute("class","w3-row-padding w3-blue-grey");
+                var divRow3=document.createElement("div");
+                divRow3.setAttribute("class","w3-row-padding");
+                var divRow4=document.createElement("div");
+                divRow4.setAttribute("class","w3-row-padding");
+                var divRow5=document.createElement("div");
+                divRow5.setAttribute("class","w3-row-padding");
+                var divRow6=document.createElement("div");
+                divRow6.setAttribute("class","w3-row-padding");
+                var divRow7=document.createElement("div");
+                divRow7.setAttribute("class","w3-row-padding");
+                var divRow1cell1=document.createElement("div");
+                divRow1cell1.setAttribute("class","w3-col l8 w3-khaki w3-border");
+                divRow1cell1.setAttribute("style","font-weight: bold");
+                var divRow1cell2=document.createElement("div");
+                divRow1cell2.setAttribute("class","w3-col l2 w3-khaki w3-border");
+                divRow1cell2.setAttribute("style","font-weight: bold");
+                var divRow1cell3=document.createElement("div");
+                divRow1cell3.setAttribute("class","w3-col l2 w3-khaki w3-border");
+                divRow1cell3.setAttribute("style","font-weight: bold");
+                var divRow2cell1=document.createElement("div");
+                divRow2cell1.setAttribute("class","w3-col l8 w3-border");
+                divRow2cell1.setAttribute("style","font-weight: bold");
+                var divRow2cell2=document.createElement("div");
+                divRow2cell2.setAttribute("class","w3-col l2 w3-border");
+                divRow2cell2.setAttribute("style","font-weight: bold");
+                var divRow2cell3=document.createElement("div");
+                divRow2cell3.setAttribute("class","w3-col l2 w3-border");
+                divRow2cell3.setAttribute("style","font-weight: bold");
+                var divRow3cell1=document.createElement("div");
+                divRow3cell1.setAttribute("class","w3-col l12 w3-border");
+                var divRow4cell1=document.createElement("div");
+                divRow4cell1.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow4cell2=document.createElement("div");
+                divRow4cell2.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                var divRow4cell3=document.createElement("div");
+                divRow4cell3.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                var divRow4cell4=document.createElement("div");
+                divRow4cell4.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                var divRow5cell1=document.createElement("div");
+                divRow5cell1.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow5cell2=document.createElement("div");
+                divRow5cell2.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow5cell3=document.createElement("div");
+                divRow5cell3.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow5cell4=document.createElement("div");
+                divRow5cell4.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow6cell1=document.createElement("div");
+                divRow6cell1.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow6cell2=document.createElement("div");
+                divRow6cell2.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow6cell3=document.createElement("div");
+                divRow6cell3.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow6cell4=document.createElement("div");
+                divRow6cell4.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow7cell1=document.createElement("div");
+                divRow7cell1.setAttribute("class","w3-col l3 w3-border w3-right-align");
+                var divRow7cell2=document.createElement("div");
+                divRow7cell2.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                var divRow7cell3=document.createElement("div");
+                divRow7cell3.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                var divRow7cell4=document.createElement("div");
+                divRow7cell4.setAttribute("class","w3-col l3 w3-border w3-right-align w3-blue-grey");
+                divRow1cell1.innerHTML="Shipper Name";
+                divRow1cell2.innerHTML="Job No";
+                divRow1cell3.innerHTML="Inv No";
+                divRow2cell1.innerHTML=myobj.shipper_name;
+                divRow2cell2.innerHTML=myobj.jobno;
+                divRow2cell3.innerHTML=myobj.invoiceno;
+                divRow3cell1.innerHTML="Marks:-"+myobj.makrs+"---"+myobj.packing+"---"+myobj.location;
+                divRow4cell1.innerHTML="";
+                divRow4cell2.innerHTML="Bags";
+                divRow4cell3.innerHTML="NMT";
+                divRow4cell4.innerHTML="GMT";
+                divRow5cell1.innerHTML="Total";
+                divRow5cell2.innerHTML=myobj.bags;
+                divRow5cell3.innerHTML=(myobj.nmt).toFixed(3);
+                divRow5cell4.innerHTML=(myobj.gmt).toFixed(3);
+                divRow6cell1.innerHTML="Carting Done";
+                divRow6cell2.innerHTML=myobj.gatspasscarted;
+                divRow6cell3.innerHTML=(myobj.gnmt).toFixed(3);
+                divRow6cell4.innerHTML=(myobj.ggmt).toFixed(3);
+                divRow7cell1.innerHTML="Balance";
+                divRow7cell2.innerHTML=parseFloat(myobj.bags-myobj.gatspasscarted);
+                divRow7cell3.innerHTML=parseFloat(myobj.nmt-myobj.gnmt).toFixed(3);
+                divRow7cell4.innerHTML=parseFloat(myobj.gmt-myobj.ggmt).toFixed(3);
+                div.appendChild(divRow1);
+                div.appendChild(divRow2);
+                div.appendChild(divRow3);
+                div.appendChild(divRow4);
+                div.appendChild(divRow5);
+                div.appendChild(divRow6);
+                div.appendChild(divRow7);
+                div.appendChild(br);
+                divRow1.appendChild(divRow1cell1);
+                divRow1.appendChild(divRow1cell2);
+                divRow1.appendChild(divRow1cell3);
+                divRow2.appendChild(divRow2cell1);
+                divRow2.appendChild(divRow2cell2);
+                divRow2.appendChild(divRow2cell3);
+                divRow3.appendChild(divRow3cell1);
+                divRow4.appendChild(divRow4cell1);
+                divRow4.appendChild(divRow4cell2);
+                divRow4.appendChild(divRow4cell3);
+                divRow4.appendChild(divRow4cell4);
+                divRow5.appendChild(divRow5cell1);
+                divRow5.appendChild(divRow5cell2);
+                divRow5.appendChild(divRow5cell3);
+                divRow5.appendChild(divRow5cell4);
+                divRow6.appendChild(divRow6cell1);
+                divRow6.appendChild(divRow6cell2);
+                divRow6.appendChild(divRow6cell3);
+                divRow6.appendChild(divRow6cell4);
+                divRow7.appendChild(divRow7cell1);
+                divRow7.appendChild(divRow7cell2);
+                divRow7.appendChild(divRow7cell3);
+                divRow7.appendChild(divRow7cell4);
+            });
+        }
+    }
+    xhttp.open("GET","secondcontainerdetailsmarksselected?marksid="+marksid.value,true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
 }
