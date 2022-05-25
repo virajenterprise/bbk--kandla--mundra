@@ -252,14 +252,11 @@ module.exports = {
         });
     },
     secondcontainerdetailsmarksselected:(req,res)=>{
-        let query="SELECT shippermaster.shipper_name,jobtable.jobno,jobtable.invoiceno,markspacking.makrs,markspacking.packing,markspacking.location,markspacking.bags,(markspacking.bags*markspacking.eachbagNweigh/1000) AS nmt,(markspacking.bags*markspacking.eachbagGweigh/1000) AS gmt,SUM(gatepassgrid.bags) AS gatspasscarted, (SUM(gatepassgrid.bags)*markspacking.eachbagNweigh/1000)AS gnmt,(SUM(gatepassgrid.bags)*markspacking.eachbagGweigh/1000)AS ggmt FROM (((markspacking INNER JOIN jobtable ON jobtable.jobtable_id=markspacking.jobtableref)INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id)INNER JOIN gatepassgrid ON gatepassgrid.markspackingid=markspacking.markspacking_ID)WHERE markspacking.markspacking_ID='"+req.query.marksid+"'";
+        let query="SELECT shippermaster.shipper_name,jobtable.jobno,jobtable.invoiceno,markspacking.makrs,markspacking.packing,markspacking.location,markspacking.bags,(markspacking.bags*markspacking.eachbagNweigh/1000) AS nmt,(markspacking.bags*markspacking.eachbagGweigh/1000) AS gmt,SUM(gatepassgrid.bags) AS gatspasscarted, (SUM(gatepassgrid.bags)*markspacking.eachbagNweigh/1000)AS gnmt,(SUM(gatepassgrid.bags)*markspacking.eachbagGweigh/1000)AS ggmt FROM (((markspacking INNER JOIN jobtable ON jobtable.jobtable_id=markspacking.jobtableref)INNER JOIN shippermaster ON jobtable.shipperName=shippermaster.shippermaster_id)RIGHT JOIN gatepassgrid ON gatepassgrid.markspackingid=markspacking.markspacking_ID)WHERE markspacking.markspacking_ID='"+req.query.marksid+"'";
         conn.query(query,(err,results)=>{
-            if(err){
-                console.log(query);
-                console.log(err);
-                
-            }else{
-
+            if(err){                
+                console.log(err);                
+            }else{                
                 res.send(results);
             }
         });

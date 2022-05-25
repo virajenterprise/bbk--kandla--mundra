@@ -987,8 +987,7 @@ function displaydetailssecondcontainermarkswise(){
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
-            var myobj=JSON.parse(this.responseText);
-            console.log(myobj);
+            var myobj=JSON.parse(this.responseText);            
             myobj.forEach((myobj,index)=>{
                 var br=document.createElement("br");
                 var divRow1=document.createElement("div")
@@ -1073,13 +1072,37 @@ function displaydetailssecondcontainermarkswise(){
                 divRow5cell3.innerHTML=(myobj.nmt).toFixed(3);
                 divRow5cell4.innerHTML=(myobj.gmt).toFixed(3);
                 divRow6cell1.innerHTML="Carting Done";
-                divRow6cell2.innerHTML=myobj.gatspasscarted;
-                divRow6cell3.innerHTML=(myobj.gnmt).toFixed(3);
-                divRow6cell4.innerHTML=(myobj.ggmt).toFixed(3);
+                if(myobj.gatspasscarted==null){
+                    divRow6cell2.innerHTML=0
+                }else{
+                    divRow6cell2.innerHTML=myobj.gatspasscarted;
+                }                
+                if(myobj.gnmt==null){                    
+                    divRow6cell3.innerHTML=(0).toFixed(3);
+                }else{                    
+                    divRow6cell3.innerHTML=(myobj.gnmt).toFixed(3);
+                }
+                if(myobj.ggmt==null){
+                    divRow6cell4.innerHTML=(0).toFixed(3);
+                }else{
+                    divRow6cell4.innerHTML=(myobj.ggmt).toFixed(3);
+                }                
                 divRow7cell1.innerHTML="Balance";
-                divRow7cell2.innerHTML=parseFloat(myobj.bags-myobj.gatspasscarted);
-                divRow7cell3.innerHTML=parseFloat(myobj.nmt-myobj.gnmt).toFixed(3);
-                divRow7cell4.innerHTML=parseFloat(myobj.gmt-myobj.ggmt).toFixed(3);
+                if(myobj.gatspasscarted==null){
+                    divRow7cell2.innerHTML=parseFloat(myobj.bags-0);
+                }else{
+                    divRow7cell2.innerHTML=parseFloat(myobj.bags-myobj.gatspasscarted);
+                }
+                if(myobj.gnmt==null){
+                    divRow7cell3.innerHTML=parseFloat(myobj.nmt-0).toFixed(3);                    
+                }else{
+                    divRow7cell3.innerHTML=parseFloat(myobj.nmt-myobj.gnmt).toFixed(3);
+                }
+                if(myobj.ggmt===null){
+                    divRow7cell4.innerHTML=parseFloat(myobj.gmt-0).toFixed(3);                    
+                }else{
+                    divRow7cell4.innerHTML=parseFloat(myobj.gmt-myobj.ggmt).toFixed(3);
+                }                
                 div.appendChild(divRow1);
                 div.appendChild(divRow2);
                 div.appendChild(divRow3);
