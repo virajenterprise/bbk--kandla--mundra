@@ -262,5 +262,24 @@ module.exports = {
     },
     kandlaGatepassPrint:(req,res)=>{
         res.render('kandlagp.ejs');
-    }
+    },
+    PDFgatepass:(req,res)=>{
+        let fonts={
+            Roboto:{
+                normal:'fonts/roboto/Roboto-Regular.ttf',
+                bold:'fonts/roboto/Roboto-Medium.ttf',
+                italics:'fonts/roboto/Roboto-Italic.ttf',
+                bolditalics:'fonts/roboto/Roboto-MediumItalic.ttf'
+            }
+        }
+        let pdfmake= new Pdfmake(fonts);
+        let docDefination={
+            content:[
+                'Hello World!'
+            ],
+        }
+        let pdfDoc=pdfmake.createPdfKitDocument(docDefination,{});
+        pdfDoc.pipe(fs.createWriteStream('test.pdf'));
+        pdfDoc.end();
+    }    
 }

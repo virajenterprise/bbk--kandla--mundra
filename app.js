@@ -7,6 +7,8 @@ const app = express();
 const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const ExcelJS = require('exceljs');
+const fs = require('fs');
+const Pdfmake = require('pdfmake');
 
 //Ajax Path Here
 const ajax = require('./routes/ajax');
@@ -19,6 +21,7 @@ app.use(express.json());//parse form data
 app.use(express.static(path.join(__dirname,'public')));//configure express to use public folder
 app.use(fileUpload());//configure express to fileupload
 app.use(cookieParser());
+app.use(Pdfmake);
 
 
 //Connection
@@ -60,5 +63,6 @@ app.delete('/deletegatepassgrid',ajax.deletegatepassgrid);
 app.get('/secondcontainerdetailsjoball',ajax.secondcontainerdetailsjoball);
 app.get('/secondcontainerdetailsmarksselected',ajax.secondcontainerdetailsmarksselected);
 app.get('/kgp',ajax.kandlaGatepassPrint);
+app.get('/PDFgatepass',ajax.PDFgatepass);
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});

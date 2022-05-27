@@ -1141,3 +1141,10 @@ function displaydetailssecondcontainermarkswise(){
     xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
     xhttp.send();
 }
+function pdfgatepass(){
+    var xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange=function(){}
+    xhttp.open("GET","/PDFgatepass",true);
+    xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.send();
+}
