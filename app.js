@@ -59,5 +59,6 @@ app.post('/updategatepass',ajax.updategatepass);
 app.delete('/deletegatepassgrid',ajax.deletegatepassgrid);
 app.get('/secondcontainerdetailsjoball',ajax.secondcontainerdetailsjoball);
 app.get('/secondcontainerdetailsmarksselected',ajax.secondcontainerdetailsmarksselected);
+app.get('/kgp',ajax.kandlaGatepassPrint);
 //app listen
 app.listen(3011,()=>{console.log("Server Started on Port 3011")});

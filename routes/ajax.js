@@ -227,8 +227,7 @@ module.exports = {
         conn.query(query,(err,results)=>{
             if(err){
                 console.log(err);
-            }else{
-                console.log(query);
+            }else{                
                 res.send("Deleted");
             }
         });
@@ -260,5 +259,8 @@ module.exports = {
                 res.send(results);
             }
         });
+    },
+    kandlaGatepassPrint:(req,res)=>{
+        res.render('kandlagp.ejs');
     }
 }
