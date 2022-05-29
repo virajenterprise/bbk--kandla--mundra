@@ -7,11 +7,14 @@ const app = express();
 const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const ExcelJS = require('exceljs');
-const fs = require('fs');
-const Pdfmake = require('pdfmake');
+const pdfmake =require("pdfmake");
+const Roboto=require("@fontsource/roboto");
+
+
 
 //Ajax Path Here
 const ajax = require('./routes/ajax');
+
 
 //parser application / json
 app.set('views',__dirname+'/views');//render views from this folder
@@ -21,7 +24,10 @@ app.use(express.json());//parse form data
 app.use(express.static(path.join(__dirname,'public')));//configure express to use public folder
 app.use(fileUpload());//configure express to fileupload
 app.use(cookieParser());
-app.use(Pdfmake);
+app.use(pdfmake);
+
+
+
 
 
 //Connection

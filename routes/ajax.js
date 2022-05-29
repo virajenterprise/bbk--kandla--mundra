@@ -1,6 +1,9 @@
 const { query } = require("express");
+const { path } = require("express/lib/application");
 const req = require("express/lib/request");
 const Query = require("mysql/lib/protocol/sequences/Query");
+const PdfPrinter = require("pdfmake");
+
 
 module.exports = {
     deskPage:(req,res)=>{
@@ -263,23 +266,12 @@ module.exports = {
     kandlaGatepassPrint:(req,res)=>{
         res.render('kandlagp.ejs');
     },
-    PDFgatepass:(req,res)=>{
-        let fonts={
-            Roboto:{
-                normal:'fonts/roboto/Roboto-Regular.ttf',
-                bold:'fonts/roboto/Roboto-Medium.ttf',
-                italics:'fonts/roboto/Roboto-Italic.ttf',
-                bolditalics:'fonts/roboto/Roboto-MediumItalic.ttf'
-            }
-        }
-        let pdfmake= new Pdfmake(fonts);
-        let docDefination={
-            content:[
-                'Hello World!'
-            ],
-        }
-        let pdfDoc=pdfmake.createPdfKitDocument(docDefination,{});
-        pdfDoc.pipe(fs.createWriteStream('test.pdf'));
-        pdfDoc.end();
-    }    
+    PDFgatepass:(req,res)=>{        
+        createPdfBinary(dd,function(binary){
+            res.contentType('application/pdf');
+            res.send(binary);            
+        },function(error){
+            res.send('ERROR:'+error);
+        });
+    },    
 }
