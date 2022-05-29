@@ -7,8 +7,7 @@ const app = express();
 const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const ExcelJS = require('exceljs');
-const pdfmake =require("pdfmake");
-const Roboto=require("@fontsource/roboto");
+
 
 
 
@@ -24,7 +23,7 @@ app.use(express.json());//parse form data
 app.use(express.static(path.join(__dirname,'public')));//configure express to use public folder
 app.use(fileUpload());//configure express to fileupload
 app.use(cookieParser());
-app.use(pdfmake);
+
 
 
 
