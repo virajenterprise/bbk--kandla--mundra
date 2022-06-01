@@ -27,8 +27,6 @@ app.use(cookieParser());
 
 
 
-
-
 //Connection
 const conn = mysql.createConnection({
     host:process.env.DB_HOST,

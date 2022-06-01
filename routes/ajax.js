@@ -2,8 +2,17 @@ const { query } = require("express");
 const { path } = require("express/lib/application");
 const req = require("express/lib/request");
 const Query = require("mysql/lib/protocol/sequences/Query");
-const PdfPrinter = require("pdfmake");
-
+const fs=require("fs");
+const fonts={
+    Roboto:{
+        normal: "./public/fonts/Roboto/Roboto-Regular.ttf",        
+		bold: './publicfonts/Roboto/Roboto-Medium.ttf',
+		italics: './publicfonts/Roboto/Roboto-Italic.ttf',
+		bolditalics: './publicfonts/Roboto/Roboto-MediumItalic.ttf'
+    }
+}
+const PdfPrinter =require('pdfmake');
+const printer = new PdfPrinter(fonts);
 
 module.exports = {
     deskPage:(req,res)=>{
@@ -267,11 +276,9 @@ module.exports = {
         res.render('kandlagp.ejs');
     },
     PDFgatepass:(req,res)=>{        
-        createPdfBinary(dd,function(binary){
-            res.contentType('application/pdf');
-            res.send(binary);            
-        },function(error){
-            res.send('ERROR:'+error);
-        });
+        let docDefinition ={}  
+        var pdfDoc =printer.createPdfKitDocument(docDefinition);
+        pdfDoc.pipe(fs.createWriteStream('file.pdf'));
+        pdfDoc.end();        
     },    
 }
