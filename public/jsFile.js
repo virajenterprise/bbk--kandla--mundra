@@ -676,7 +676,7 @@ function searcholdgatepassbtn(){
     var date=document.getElementById("searchnumdate");
     var table=document.getElementById("searcholdgatepasstable");
     removetbodies(table.getElementsByTagName("tbody"));    
-    var fdata="truckno="+truckno.value+"&shippername="+shippername.value+"&jobno="+jobno.value+"&date="+date.value;
+    var fdata="truckno="+truckno.value+"&shippername="+shippername.value+"&jobno="+jobno.value+"&date="+date.value;    
     var xhttp=new XMLHttpRequest();
     xhttp.onreadystatechange=function(){
         if(this.readyState==4&&this.status==200){
@@ -1142,9 +1142,18 @@ function displaydetailssecondcontainermarkswise(){
     xhttp.send();
 }
 function pdfgatepass(){
-    var xhttp=new XMLHttpRequest();
-    xhttp.onreadystatechange=function(){}
-    xhttp.open("GET","/PDFgatepass",true);
+    var id=document.getElementById("gatePassID");    
+    var xhttp=new XMLHttpRequest();    
+    xhttp.onreadystatechange=function(){
+        if(this.readyState==4&&this.status==200){
+            var pdfdata=new Uint8Array(this.response);
+            var pdfblob=new Blob([pdfdata],{type:'application/pdf'});
+            var pdfurl=URL.createObjectURL(pdfblob);
+            window.open(pdfurl,'_blank:GatePass','width=750,height=750');
+        }
+    }
+    xhttp.open("GET","/PDFgatepass?id="+id.value,true);
     xhttp.setRequestHeader('Content-Type','application/X-www-form-urlencoded');
+    xhttp.responseType='arraybuffer';
     xhttp.send();
 }

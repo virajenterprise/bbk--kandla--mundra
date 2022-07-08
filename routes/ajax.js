@@ -6,12 +6,13 @@ const fs=require("fs");
 const fonts={
     Roboto:{
         normal: "./public/fonts/Roboto/Roboto-Regular.ttf",        
-		bold: './publicfonts/Roboto/Roboto-Medium.ttf',
-		italics: './publicfonts/Roboto/Roboto-Italic.ttf',
-		bolditalics: './publicfonts/Roboto/Roboto-MediumItalic.ttf'
+		bold: './public/fonts/Roboto/Roboto-Medium.ttf',
+		italics: './public/fonts/Roboto/Roboto-Italic.ttf',
+		bolditalics: './public/fonts/Roboto/Roboto-MediumItalic.ttf'
     }
 }
 const PdfPrinter =require('pdfmake');
+const { Certificate } = require("crypto");
 const printer = new PdfPrinter(fonts);
 
 module.exports = {
@@ -195,7 +196,7 @@ module.exports = {
         conn.query(query,(err,results)=>{
             if(err){                
                 console.log(err);
-            }else{                
+            }else{
                 res.send(results);
             }
         });
@@ -275,10 +276,270 @@ module.exports = {
     kandlaGatepassPrint:(req,res)=>{
         res.render('kandlagp.ejs');
     },
-    PDFgatepass:(req,res)=>{        
-        let docDefinition ={}  
-        var pdfDoc =printer.createPdfKitDocument(docDefinition);
-        pdfDoc.pipe(fs.createWriteStream('file.pdf'));
+    PDFgatepass:(req,res)=>{
+        let query=""
+        let docDefinition ={
+            pageSize:'A5',
+            pageMargins:[10,10,0,10],
+            content:[
+                {                    
+                    table:{
+                        widths:[17,50,56,25,25,25,28,95],
+                        body:[
+                            [{colSpan:8,alignment:'center',width:400,border:[false,false,false,false],image:'./public/v-arjoon-logo.jpg'},{},{},{},{},{},{},{}],
+
+                            [
+                                {border:[false,false,false,false],text:'No',rowSpan:2,fontSize:10},
+                                {fontSize:14,border:[false,false,false,false],text:'651',rowSpan:2,colSpan:5,fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {alignment:'right',border:[false,false,false,false],text:'Date',rowSpan:2,fontSize:10},
+                                {border:[false,false,false,true],text:'',rowSpan:2,fontSize:10},                                
+                            ],
+                            [
+                                //{colSpan:8,border:[true,true,true,true],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:6,border:[false,false,false,false],text:''},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {alignment:'right',border:[false,false,false,false],text:'Shift',fontSize:10},
+                                {border:[false,false,false,true],text:'',fontSize:10}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:6,border:[false,false,false,false],text:'The Traffic Manager',fontSize:9},
+                                {},
+                                {},                                
+                                {},
+                                {},
+                                {},
+                                {colSpan:2,border:[false,false,false,false],text:'The Assistant',fontSize:9},
+                                {},                                
+                            ],
+                            [
+                                {colSpan:6,border:[false,false,false,false],text:'Deendayal Port Authority',fontSize:9},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {colSpan:2,border:[false,false,false,false],text:'Commissioner of Customs',fontSize:9},
+                                {}                                
+                            ],
+                            [
+                                {colSpan:6,border:[false,false,false,false],text:'NEW KADNLA.',fontSize:9},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {colSpan:2,border:[false,false,false,false],text:'NEW KANDLA.',fontSize:9},
+                                {}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:'Dear Sir,'},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],                            
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:'Sub. : Export/Import/Misc. Gate Pass',bold:true,fontSize:12,alignment:'center'},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''},{border:[false,false,false,false],text:''}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:'Kindly allow us to take in/out side the Dock area the material shown below.',fontSize:12},{},{},{},{},{},{},{}
+                            ],
+                            [                                
+                                {border:[false,false,false,false],text:'1.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:'No. of Packages',fontSize:10},
+                                {},
+                                {colSpan:5,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'2.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:'Des. of Goods',fontSize:10},
+                                {},
+                                {colSpan:5,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'3.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:'By C.C./Truck No',fontSize:10},
+                                {},
+                                {colSpan:5,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'4.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:'R.T.P No.',fontSize:10},
+                                {},
+                                {colSpan:5,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'5.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:"Driver's Name",fontSize:10},
+                                {},
+                                {colSpan:5,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'6.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:"Bill Of Entry/S.Bill No.",fontSize:10},
+                                {},
+                                {colSpan:3,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {border:[false,false,false,false],text:'Date.',alignment:'right',fontSize:10},
+                                {border:[false,false,false,true],text:'',fontSize:10}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'7.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:"Wharfage Entry No.",fontSize:10},
+                                {},
+                                {colSpan:3,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {border:[false,false,false,false],text:'Date.',alignment:'right',fontSize:10},
+                                {border:[false,false,false,true],text:'',fontSize:10}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'8.',fontSize:10},
+                                {colSpan:2,border:[false,false,false,false],text:"Vessel Name.",fontSize:10},
+                                {},
+                                {colSpan:3,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {},
+                                {border:[false,false,false,false],text:'VCN.',alignment:'right',fontSize:10},
+                                {border:[false,false,false,true],text:'',fontSize:10}
+                            ],
+                            [
+                                {border:[false,false,false,false],colSpan:8,text:'Weigh',alignment:'left',fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'G',fontSize:10},
+                                {colSpan:2, border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {border:[false,false,false,false],text:'T',fontSize:10},
+                                {colSpan:2,border:[false,false,false,true],text:'',fontSize:10},
+                                {},
+                                {border:[false,false,false,false],text:'N',fontSize:10},
+                                {border:[false,false,false,true],text:'',fontSize:10}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'A/c. M/s.',colSpan:2,fontSize:10},
+                                {},
+                                {border:[false,false,false,true],text:'',colSpan:6,fontSize:10},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {colSpan:8,border:[false,false,false,false],text:''},{},{},{},{},{},{},{}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'The above particular are true and correct to the best of our knowledge and belief.',colSpan:8,fontSize:11},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'Thankig You,',colSpan:2},
+                                {},
+                                {border:[false,false,false,false],text:'',colSpan:3},
+                                {},
+                                {},                                
+                                {border:[false,false,false,false],text:"Your's faithfully",colSpan:3,alignment:'right'},
+                                {},
+                                {}
+                            ],
+                            [
+                                {border:[false,false,false,false],text:'For, V.ARJOON',fontSize:14,colSpan:8,alignment:'right'},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {}
+                            ]
+                        ]
+                    },
+                    layout:{
+                        defaultBorder:true
+                    },margin:[0,0,0,0],
+                }
+            ],            
+        }  
+        var pdfDoc =printer.createPdfKitDocument(docDefinition);        
+        //pdfDoc.pipe(fs.createWriteStream('file.pdf'));
+        var chunks=[];
+        var pdffilegatepass;
+
+        pdfDoc.on(`data`,function(chunk){
+            chunks.push(chunk);
+        });
+
+        pdfDoc.on(`end`,function(){
+            pdffilegatepass=Buffer.concat(chunks);
+            res.contentType('application/pdf');
+            res.send(pdffilegatepass);
+        });
+
         pdfDoc.end();        
     },    
 }
